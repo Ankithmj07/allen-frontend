@@ -7,16 +7,17 @@ interface AuthModalProps {
   onLoginSuccess: (data: { token: string; student: any }) => void;
 }
 
+// Define response types for better typings
 interface LoginResponse {
   token: string;
-  student: any; // Replace 'any' with your actual student type if available
+  student: any;
   message?: string;
 }
 
 interface SignupResponse {
   message?: string;
   error?: {
-    issues?: { path: string[]; message: string }[];
+    issues?: Array<{ path: string[]; message: string }>;
   };
 }
 
@@ -46,7 +47,8 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
           body: JSON.stringify({ email, password }),
         });
 
-        const data: LoginResponse = await response.json();
+        const data = (await response.json()) as LoginResponse;
+        console.log(data);
 
         if (response.ok) {
           localStorage.setItem("token", data.token);
@@ -58,7 +60,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
           } else if (data.message?.includes("User")) {
             setErrors({ email: data.message });
           } else {
-            setErrors({ general: data.message || "Login failed." });
+            setErrors({ general: data.message || "Login failed" });
           }
         }
       } catch (err) {
@@ -74,7 +76,8 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
           body: JSON.stringify(signupData),
         });
 
-        const data: SignupResponse = await response.json();
+        const data = (await response.json()) as SignupResponse;
+        console.log(data);
 
         if (response.ok) {
           setIsLogin(true);
@@ -89,7 +92,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
           } else if (data.message?.includes("Email")) {
             newErrors["email"] = data.message;
           } else {
-            newErrors["general"] = data.message || "Signup failed.";
+            newErrors["general"] = data.message || "Signup failed";
           }
 
           setErrors(newErrors);
@@ -135,6 +138,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 <div>
                   <label className="block mb-1 text-sm">Name</label>
                   <input
+                    name="name"
                     type="text"
                     value={name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
@@ -147,6 +151,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 <div>
                   <label className="block mb-1 text-sm">Phone Number</label>
                   <input
+                    name="phNumber"
                     type="tel"
                     value={phNumber}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhNumber(e.target.value)}
@@ -158,6 +163,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 <div>
                   <label className="block mb-1 text-sm">Class Level</label>
                   <select
+                    name="classLevel"
                     value={classLevel}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setClassLevel(e.target.value)}
                     className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
@@ -174,6 +180,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 <div>
                   <label className="block mb-1 text-sm">Exam</label>
                   <select
+                    name="exam"
                     value={exam}
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setExam(e.target.value)}
                     className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
@@ -192,6 +199,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
             <div>
               <label className="block mb-1 text-sm">Email</label>
               <input
+                name="email"
                 type="email"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
@@ -204,6 +212,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
             <div>
               <label className="block mb-1 text-sm">Password</label>
               <input
+                name="password"
                 type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -222,27 +231,26 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
 
             <button
               type="submit"
-              className="w-full bg-yellow-400 text-black font-semibold py-2 rounded-md hover:bg-yellow-500 transition"
+              className="w-full px-4 py-2 bg-[#0266da] hover:bg-[#3592fd] text-white font-semibold rounded-md"
             >
-              {isLogin ? 'Login' : 'Sign Up'}
+              {isLogin ? 'Login' : 'Create Account'}
             </button>
-
-            {errors.general && <p className="text-red-500 text-center mt-2">{errors.general}</p>}
-
           </form>
 
-          <p className="mt-4 text-center text-sm text-gray-400">
-            {isLogin ? "Don't have an account? " : 'Already have an account? '}
+          <p className="text-center mt-4 text-sm">
+            {isLogin ? 'Not registered yet? ' : 'Already have an account? '}
             <button
               onClick={() => {
                 setIsLogin(!isLogin);
                 setErrors({});
               }}
-              className="text-yellow-400 font-semibold underline"
+              className="text-yellow-400 font-semibold underline underline-offset-2"
             >
-              {isLogin ? 'Sign Up' : 'Login'}
+              {isLogin ? 'Create account' : 'Login'}
             </button>
           </p>
+
+          {errors.general && <p className="text-red-500 text-center mt-2">{errors.general}</p>}
         </div>
       </div>
     </div>
