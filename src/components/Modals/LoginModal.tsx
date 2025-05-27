@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import blackHoleImg from '../../assets/blackHole.jpg'
+import blackHoleImg from '../../assets/blackHole.jpg';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -7,7 +7,20 @@ interface AuthModalProps {
   onLoginSuccess: (data: { token: string; student: any }) => void;
 }
 
-export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalProps) {
+interface LoginResponse {
+  token: string;
+  student: any; // Replace 'any' with your actual student type if available
+  message?: string;
+}
+
+interface SignupResponse {
+  message?: string;
+  error?: {
+    issues?: { path: string[]; message: string }[];
+  };
+}
+
+export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModalProps) {
   const [isLogin, setIsLogin] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,9 +35,9 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({}); // Reset previous errors
-  
+
     const baseUrl = "http://localhost:5000/api";
-  
+
     if (isLogin) {
       try {
         const response = await fetch(`${baseUrl}/student/signin`, {
@@ -32,46 +45,42 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
-  
-        const data = await response.json();
-        console.log(data)
-  
+
+        const data: LoginResponse = await response.json();
+
         if (response.ok) {
           localStorage.setItem("token", data.token);
           localStorage.setItem("student", JSON.stringify(data.student));
           onLoginSuccess(data);
-          
         } else {
           if (data.message?.includes("password")) {
             setErrors({ password: data.message });
           } else if (data.message?.includes("User")) {
             setErrors({ email: data.message });
           } else {
-            setErrors({ general: data.message });
+            setErrors({ general: data.message || "Login failed." });
           }
         }
       } catch (err) {
         setErrors({ general: "An error occurred during login." });
       }
     } else {
-      const signupData = { name, email, password, phNumber,classLevel:Number(classLevel),exam };
-  
+      const signupData = { name, email, password, phNumber, classLevel: Number(classLevel), exam };
+
       try {
         const response = await fetch(`${baseUrl}/student/signup`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(signupData),
         });
-        
-  
-        const data = await response.json();
-        console.log(data)
-  
+
+        const data: SignupResponse = await response.json();
+
         if (response.ok) {
           setIsLogin(true);
         } else {
           const newErrors: { [key: string]: string } = {};
-  
+
           if (data?.error?.issues) {
             for (const issue of data.error.issues) {
               const path = issue.path[0];
@@ -79,8 +88,10 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
             }
           } else if (data.message?.includes("Email")) {
             newErrors["email"] = data.message;
+          } else {
+            newErrors["general"] = data.message || "Signup failed.";
           }
-  
+
           setErrors(newErrors);
         }
       } catch (err) {
@@ -88,10 +99,9 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
       }
     }
   };
-  
 
   return (
-    <div className="fixed z-100 inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/50">
       <div className="w-full max-w-5xl bg-[#1d1d1d] rounded-3xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 relative p-2">
 
         {/* Close Button */}
@@ -99,8 +109,9 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
           ✕
         </button>
 
-        <div className="hidden lg:flex bg-cover rounded-2xl bg-center p-10 text-white flex flex-col justify-between"
-        style={{ backgroundImage: `url(${blackHoleImg})` }}
+        <div
+          className="hidden lg:flex bg-cover rounded-2xl bg-center p-10 text-white flex flex-col justify-between"
+          style={{ backgroundImage: `url(${blackHoleImg})` }}
         >
           <div className="text-white text-3xl font-bold">a.</div>
           <div className="mt-auto">
@@ -121,12 +132,12 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
 
             {!isLogin && (
               <>
-              <div>
+                <div>
                   <label className="block mb-1 text-sm">Name</label>
                   <input
                     type="text"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
                     className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
                     required
                   />
@@ -138,32 +149,33 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
                   <input
                     type="tel"
                     value={phNumber}
-                    onChange={(e) => setPhNumber(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhNumber(e.target.value)}
                     className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
                     required
                   />
                 </div>
+
                 <div>
-                    <label className="block mb-1 text-sm">Class Level</label>
-                    <select
-                      value={classLevel}
-                      onChange={(e) => setClassLevel(e.target.value)}
-                      className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
-                      required
-                    >
-                      <option value="">Select</option>
-                      <option value="6-10">Class 6-10</option>
-                      <option value="11">Class 11</option>
-                      <option value="12">Class 12</option>
-                    </select>
-                    {errors.classLevel && <p className="text-red-500 text-xs mt-1">{errors.classLevel}</p>}
+                  <label className="block mb-1 text-sm">Class Level</label>
+                  <select
+                    value={classLevel}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setClassLevel(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="6-10">Class 6-10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                  </select>
+                  {errors.classLevel && <p className="text-red-500 text-xs mt-1">{errors.classLevel}</p>}
                 </div>
 
                 <div>
                   <label className="block mb-1 text-sm">Exam</label>
                   <select
                     value={exam}
-                    onChange={(e) => setExam(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setExam(e.target.value)}
                     className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
                     required
                   >
@@ -174,7 +186,6 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
                   </select>
                   {errors.exam && <p className="text-red-500 text-xs mt-1">{errors.exam}</p>}
                 </div>
-
               </>
             )}
 
@@ -183,7 +194,7 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
                 required
               />
@@ -195,7 +206,7 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
                 required
               />
@@ -211,22 +222,26 @@ export default function AuthModal({ isOpen, onClose,onLoginSuccess }: AuthModalP
 
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-[#0266da] hover:bg-[#3592fd] text-white font-semibold rounded-md"
+              className="w-full bg-yellow-400 text-black font-semibold py-2 rounded-md hover:bg-yellow-500 transition"
             >
-              {isLogin ? 'Login' : 'Create Account'}
+              {isLogin ? 'Login' : 'Sign Up'}
             </button>
+
+            {errors.general && <p className="text-red-500 text-center mt-2">{errors.general}</p>}
+
           </form>
 
-          <p className="text-center mt-4 text-sm">
-            {isLogin ? 'Not a member?' : 'Already have an account?'}{' '}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-[#0266da] hover:text-[#3592fd] hover:underline hover:cursor-pointer font-semibold">
-              {isLogin ? 'Create an account' : 'Login'}
+          <p className="mt-4 text-center text-sm text-gray-400">
+            {isLogin ? "Don't have an account? " : 'Already have an account? '}
+            <button
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setErrors({});
+              }}
+              className="text-yellow-400 font-semibold underline"
+            >
+              {isLogin ? 'Sign Up' : 'Login'}
             </button>
-            <br/>
-            {errors.general && (
-            <span className="text-red-500 text-center text-sm">{errors.general}</span>
-            )}
-
           </p>
         </div>
       </div>
