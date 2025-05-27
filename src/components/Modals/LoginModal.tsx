@@ -202,8 +202,11 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 name="email"
                 type="email"
                 value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
+                onChange={(e) => {
+                  const target = e.target as HTMLInputElement; // or HTMLSelectElement if select
+                  setEmail(target.value);
+                }}
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-[#3592fd] outline-none"
                 required
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -216,7 +219,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 type="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-yellow-400 outline-none"
+                className="w-full px-4 py-2 bg-gray-800 text-white rounded-md focus:ring-2 focus:ring-[#3592fd] outline-none"
                 required
               />
               {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
@@ -224,7 +227,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
 
             {isLogin && (
               <div className="flex items-center space-x-2">
-                <input id="remember" type="checkbox" className="accent-yellow-400" />
+                <input id="remember" type="checkbox" className="accent-[#3592fd]" />
                 <label htmlFor="remember" className="text-sm">Remember me</label>
               </div>
             )}
@@ -244,7 +247,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 setIsLogin(!isLogin);
                 setErrors({});
               }}
-              className="text-yellow-400 font-semibold underline underline-offset-2"
+              className="text-[#3592fd] font-semibold underline underline-offset-2"
             >
               {isLogin ? 'Create account' : 'Login'}
             </button>
