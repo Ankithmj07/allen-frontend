@@ -242,14 +242,14 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
             </button>
           </form>
 
-          <p className="text-center mt-4 text-sm">
+          <p className="text-center mt-4 text-sm cursor-pointer">
             {isLogin ? 'Not registered yet? ' : 'Already have an account? '}
             <button
               onClick={() => {
                 setIsLogin(!isLogin);
                 setErrors({});
               }}
-              className="text-[#3592fd] font-semibold underline underline-offset-2"
+              className="text-[#3592fd] font-semibold underline underline-offset-2 cursor-pointer"
             >
               {isLogin ? 'Create account' : 'Login'}
             </button>
