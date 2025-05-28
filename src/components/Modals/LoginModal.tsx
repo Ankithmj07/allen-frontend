@@ -236,7 +236,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
 
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-[#0266da] hover:bg-[#3592fd] text-white font-semibold rounded-md"
+              className="w-full px-4 py-2 bg-[#0266da] hover:bg-[#3592fd] text-white font-semibold rounded-md cursor-pointer"
             >
               {isLogin ? 'Login' : 'Create Account'}
             </button>
