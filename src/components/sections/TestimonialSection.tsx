@@ -16,8 +16,11 @@ const Testimonials: React.FC = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const baseUrl = "https://allen-backend.onrender.com/api";
+
+
   useEffect(() => {
-    fetch('http://localhost:5000/api/testimonials')
+    fetch('https://allen-backend.onrender.com/api/testimonials')
       .then((res) => res.json())
       .then((data) => {
         setTestimonials(data);

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import blackHoleImg from '../../assets/blackHole.jpg';
+import dotenv from 'dotenv';
+dotenv.config();
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -37,7 +39,8 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
     e.preventDefault();
     setErrors({}); // Reset previous errors
 
-    const baseUrl = "http://localhost:5000/api";
+    const baseUrl = "https://allen-backend.onrender.com/api";
+
 
     if (isLogin) {
       try {
