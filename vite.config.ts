@@ -3,9 +3,19 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: "/", // 👈 Add this line
+  base: "/",
   plugins: [
     tailwindcss(),
     react()
   ],
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      }
+    }
+  }
 })
