@@ -7,7 +7,7 @@ import trending5 from '../../assets/trending5.png';
 import trending6 from '../../assets/trending6.png';
 import trending7 from '../../assets/trending7.png';
 import trendingMobile1 from '../../assets/trendingMobile1.png';
-import trendingMobile2 from '../../assets/trendingMobile2.png';
+//import trendingMobile2 from '../../assets/trendingMobile2.png';
 import trendingMobile3 from '../../assets/trendingMobile3.png';
 import trendingMobile4 from '../../assets/trendingMobile4.png';
 import trendingMobile5 from '../../assets/trendingMobile5.png';
@@ -24,7 +24,7 @@ const mySlides = [
   {
     id: 2,
     desktopImage: trending2,
-    mobileImage: trendingMobile2,
+    mobileImage: "",
     title: 'Slide 2',
   },
   {
