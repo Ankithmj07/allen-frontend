@@ -8,10 +8,10 @@ import trending6 from '../../assets/trending6.png';
 import trending7 from '../../assets/trending7.png';
 import trendingMobile1 from '../../assets/trendingMobile1.png';
 //import trendingMobile2 from '../../assets/trendingMobile2.png';
-import trendingMobile3 from '../../assets/trendingMobile3.png';
-import trendingMobile4 from '../../assets/trendingMobile4.png';
-import trendingMobile5 from '../../assets/trendingMobile5.png';
-import trendingMobile6 from '../../assets/trendingMobile6.png';
+//import trendingMobile3 from '../../assets/trendingMobile3.png';
+//import trendingMobile4 from '../../assets/trendingMobile4.png';
+//import trendingMobile5 from '../../assets/trendingMobile5.png';
+//import trendingMobile6 from '../../assets/trendingMobile6.png';
 
 
 const mySlides = [
@@ -30,25 +30,25 @@ const mySlides = [
   {
     id: 3,
     desktopImage: trending3,
-    mobileImage: trendingMobile3,
+    mobileImage: "",
     title: 'Slide 3',
   },
   {
     id: 4,
     desktopImage: trending4,
-    mobileImage: trendingMobile4,
+    mobileImage: "",
     title: 'Slide 4',
   },
   {
     id: 5,
     desktopImage: trending5,
-    mobileImage: trendingMobile5,
+    mobileImage: "",
     title: 'Slide 5',
   },
   {
     id: 6,
     desktopImage: trending6,
-    mobileImage: trendingMobile6,
+    mobileImage: "",
     title: 'Slide 6',
   },
   {
