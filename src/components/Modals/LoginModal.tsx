@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import blackHoleImg from '../../assets/blackHole.jpg';
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 interface AuthModalProps {
   isOpen: boolean;
