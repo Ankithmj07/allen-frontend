@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Moon, Sun, Settings, BookOpen, HelpCircle, MapPin, Bell } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 type ProfileDropdownProps = {
     onLogout: () => void;
@@ -13,14 +14,19 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({onLogout}) => {
       classLevel: string;
       exam: string;
     } | null>(null);
+    const {student, logout } = useAuth();
 
-  useState(() => {
-      const studentData = localStorage.getItem("student");
-      console.log(studentData)
-      if (studentData) {
-        setUserInfo(JSON.parse(studentData));
-      }
-    });
+    useEffect(() => {
+      setUserInfo(student);
+    }, [student]);
+    
+
+    const handleLogout = () => {
+      // Clear local state first
+      setUserInfo(null);
+      // Then call parent logout
+      onLogout();
+    };
 
 
   const toggleTheme = () => setDarkMode(!darkMode);
@@ -58,7 +64,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({onLogout}) => {
 
       {/* Logout Button */}
       <button className="mt-6 w-full text-sm bg-white text-black rounded-full py-2 font-medium hover:bg-gray-200 cursor-pointer"
-      onClick={onLogout}>
+      onClick={logout}>
         Logout
       </button>
 

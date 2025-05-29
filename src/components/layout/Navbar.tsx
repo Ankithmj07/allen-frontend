@@ -5,6 +5,7 @@ import { HiMenu, HiX, HiChevronDown, HiChevronRight } from 'react-icons/hi';
 import logo from '../../assets/logo.svg';
 import LoginModal from '../Modals/LoginModal';
 import ProfileDropdown from '../Modals/ProfileModal';
+import { useAuth } from "../../contexts/AuthContext";
 
 const menuItems = [
   {
@@ -177,6 +178,7 @@ const menuItems = [
 ];
 
 const Navbar: React.FC = () => {
+  const { token, student } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -199,18 +201,48 @@ const Navbar: React.FC = () => {
     );
   };
 
+    
   useEffect(() => {
-    const studentData = JSON.parse(localStorage.getItem("student") || "null");
-    if (studentData) {
+    if (token && student) {
       setIsLoggedIn(true);
-      setUserInfo(studentData);
+      setUserInfo(student);
+    } else {
+      setIsLoggedIn(false);
+      setUserInfo(null);
+    }
+  }, [token, student]);
+
+  useEffect(() => {
+    try {
+      const studentData = localStorage.getItem("student");
+      const token = localStorage.getItem("token");
+      
+      if (studentData && token) {
+        const parsedData = JSON.parse(studentData);
+        setIsLoggedIn(true);
+        setUserInfo(parsedData);
+      } else {
+        // Ensure logged out state if data is missing
+        setIsLoggedIn(false);
+        setUserInfo(null);
+      }
+    } catch (error) {
+      console.error("Error parsing student data:", error);
+      // Clear corrupted data
+      localStorage.removeItem("student");
+      localStorage.removeItem("token");
+      setIsLoggedIn(false);
+      setUserInfo(null);
     }
   }, []);
 
+  
+
   const logout = () => {
     // Note: In artifacts, localStorage is not available, but keeping the logic for reference
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("student");
+    //localStorage.removeItem("token");
+    //localStorage.removeItem("student");
+    localStorage.clear();
     setIsLoggedIn(false);
     setUserInfo(null);
   };

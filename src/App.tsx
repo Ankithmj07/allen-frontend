@@ -5,6 +5,7 @@ import Navbar from './components/layout/Navbar';
 import Banner from './components/sections/Banner';
 import FooterSection from './components/layout/FooterSection';
 
+
 const App: React.FC = () => {
   return (
     <BrowserRouter>

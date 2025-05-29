@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import blackHoleImg from '../../assets/blackHole.jpg';
+import { useAuth } from "../../contexts/AuthContext";
 
 
 interface AuthModalProps {
@@ -31,6 +32,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
   const [classLevel, setClassLevel] = useState('');
   const [exam, setExam] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { login } = useAuth();
 
   if (!isOpen) return null;
 
@@ -53,8 +55,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
         console.log(data);
 
         if (response.ok) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("student", JSON.stringify(data.student));
+          login(data.token, data.student);
           onLoginSuccess(data);
         } else {
           if (data.message?.includes("password")) {
