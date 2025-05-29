@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import phoneLogo from '../../assets/phone-call.png';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { HiMenu, HiX, HiChevronDown, HiChevronRight } from 'react-icons/hi';
@@ -192,6 +192,9 @@ const Navbar: React.FC = () => {
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
   const [optionHoverTimeout, setOptionHoverTimeout] = useState<NodeJS.Timeout | null>(null); // New timeout for options
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -211,6 +214,43 @@ const Navbar: React.FC = () => {
       setUserInfo(null);
     }
   }, [token, student]);
+
+  
+
+  useEffect(() => {
+    const updateScreen = () => {
+      setIsDesktop(window.innerWidth >= 768); // Tailwind md breakpoint
+    };
+
+    updateScreen(); // Check on mount
+    window.addEventListener("resize", updateScreen);
+
+    return () => window.removeEventListener("resize", updateScreen);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        !isDesktop &&
+        dropdownOpen &&
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen, isDesktop]);
+
+  const toggleDropdown = () => {
+    if (!isDesktop) setDropdownOpen((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    if (!isDesktop) setDropdownOpen(false);
+  };
 
   useEffect(() => {
     try {
@@ -400,12 +440,33 @@ const Navbar: React.FC = () => {
               <div className="w-8 h-8 md:w-9 md:h-9 rounded-full border-[#2a2a2a] border-2 flex items-center justify-center">
                 <IoIosNotificationsOutline className="text-xl cursor-pointer" />
               </div>
-              <div className="relative group">
-                <div className="w-8 h-8 md:w-9 md:h-9 rounded-full border-[#2a2a2a] border-2 flex items-center justify-center font-bold text-sm cursor-pointer">
-                  {userInfo?.name?.[0]}
+              <div
+              ref={wrapperRef}
+              className={`relative ${isDesktop ? "group" : ""}`}
+              >
+                <div
+                  className="w-8 h-8 md:w-9 md:h-9 rounded-full border-[#2a2a2a] border-2 flex items-center justify-center font-bold text-sm cursor-pointer"
+                  onClick={toggleDropdown}
+                >
+                  {student?.name?.[0] ?? "U"}
                 </div>
-                <div className="absolute top-10 right-0 z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200">
-                  <ProfileDropdown onLogout={logout} />
+                    
+                {/* Dropdown */}
+                <div
+                  className={`absolute top-10 right-0 z-50 transition-opacity duration-200 ${
+                    isDesktop
+                      ? "opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
+                      : dropdownOpen
+                      ? "opacity-100 pointer-events-auto"
+                      : "opacity-0 pointer-events-none"
+                  }`}
+                >
+                  <ProfileDropdown
+                    onLogout={() => {
+                      logout();
+                      closeDropdown();
+                    }}
+                  />
                 </div>
               </div>
               <div className="hidden lg:flex flex-col text-xs lg:text-[0.69rem]">
