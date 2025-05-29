@@ -7,7 +7,7 @@ type ProfileDropdownProps = {
   };
   
 
-const ProfileDropdown: React.FC<ProfileDropdownProps> = ({onLogout}) => {
+const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const [userInfo, setUserInfo] = useState<{
       name: string;
@@ -20,13 +20,6 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({onLogout}) => {
       setUserInfo(student);
     }, [student]);
     
-
-    const handleLogout = () => {
-      // Clear local state first
-      setUserInfo(null);
-      // Then call parent logout
-      onLogout();
-    };
 
 
   const toggleTheme = () => setDarkMode(!darkMode);
