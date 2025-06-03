@@ -1,6 +1,7 @@
 // src/context/AuthContext.tsx
-import { createContext, useContext, useState } from "react";
-import type {ReactNode} from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie"
+import type { ReactNode } from "react";
 
 type Student = {
   name: string;
@@ -21,14 +22,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const [student, setStudent] = useState<Student | null>(null);
 
+  useEffect(() => {
+    // On initial load, check cookies
+    const savedToken = Cookies.get("token");
+    const savedStudent = Cookies.get("student");
+
+    if (savedToken && savedStudent) {
+      try {
+        const parsedStudent: Student = JSON.parse(savedStudent);
+        setToken(savedToken);
+        setStudent(parsedStudent);
+      } catch (error) {
+        console.error("Failed to parse student data from cookie");
+      }
+    }
+  }, []);
+
   const login = (newToken: string, newStudent: Student) => {
     setToken(newToken);
     setStudent(newStudent);
+
+    Cookies.set("token", newToken, { expires: 7 }); // expires in 7 days
+    Cookies.set("student", JSON.stringify(newStudent), { expires: 7 });
   };
 
   const logout = () => {
     setToken(null);
     setStudent(null);
+
+    Cookies.remove("token");
+    Cookies.remove("student");
   };
 
   return (
