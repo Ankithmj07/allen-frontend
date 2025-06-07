@@ -27,6 +27,16 @@ const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [expandedOptions, setExpandedOptions] = useState<string[]>([]);
+
+
+  const toggleOptionExpand = (optionName: string) => {
+    setExpandedOptions((prev) =>
+      prev.includes(optionName)
+        ? prev.filter((o) => o !== optionName)
+        : [...prev, optionName]
+    );
+  };
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -370,14 +380,43 @@ const Navbar: React.FC = () => {
               {expandedMenus.includes(item.name) && (
                 <div className="bg-gray-900 px-6 py-2">
                   {item.options.map((option) => (
-                    <a
-                      key={option.name}
-                      href={option.link}
-                      className="block py-2 text-sm text-gray-300 hover:text-white"
-                    >
-                      {option.name}
-                    </a>
+                    <div key={option.name} className="border-t border-gray-800">
+                      <button
+                        className="flex items-center justify-between w-full py-2 text-sm text-left text-gray-300 hover:text-white"
+                        onClick={() =>
+                          option.subOptions
+                            ? toggleOptionExpand(option.name)
+                            : toggleSidebar() // close sidebar if it's a direct link
+                        }
+                      >
+                        <span>{option.name}</span>
+                        {option.subOptions && (
+                          <HiChevronDown
+                            className={`transition-transform ${
+                              expandedOptions.includes(option.name) ? "rotate-180" : ""
+                            }`}
+                          />
+                        )}
+                      </button>
+                      
+                      {/* SubOptions */}
+                      {option.subOptions && expandedOptions.includes(option.name) && (
+                        <div className="pl-4 py-1">
+                          {option.subOptions.map((sub) => (
+                            <a
+                              key={sub.name}
+                              href={sub.link}
+                              className="block py-2 text-sm text-gray-400 hover:text-white"
+                              onClick={toggleSidebar} // Close sidebar on subOption click
+                            >
+                              {sub.name}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
+
                 </div>
               )}
             </div>
