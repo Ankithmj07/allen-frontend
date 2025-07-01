@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import phoneLogo from '../../assets/phone-call.png';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { HiMenu, HiX, HiChevronDown, HiChevronRight } from 'react-icons/hi';
@@ -10,6 +12,7 @@ import menuItems from "../../constants/menuItems";
 
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const { token, student } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
@@ -166,6 +169,11 @@ const Navbar: React.FC = () => {
     setOptionHoverTimeout(timeout);
   };
 
+  const navigateClick = () => {
+    console.log("clicked")
+    navigate(`/`);
+  };
+
   return (
     <>
       {/* Top Navbar */}
@@ -177,7 +185,9 @@ const Navbar: React.FC = () => {
           </button>
 
           {/* Logo */}
-          <img className="w-16 md:w-20" src={logo} alt="Logo" />
+          <button onClick={() => navigateClick()}>
+          <img className="w-16 md:w-20 cursor-pointer" src={logo}   alt="Logo" />
+          </button>
 
           {/* Desktop Menu Items */}
           <div className="hidden lg:flex space-x-8 font-[500]">
@@ -239,9 +249,9 @@ const Navbar: React.FC = () => {
                           onMouseEnter={() => handleOptionMouseEnter(option.name)}
                           onMouseLeave={handleOptionMouseLeave}
                         >
-                          <a href={option.link} className="flex-1">
+                          <Link to={`/courses/${option.name}`} className="flex-1">
                             <span>{option.name}</span>
-                          </a>
+                          </Link>
                           {option.subOptions && <HiChevronRight className="text-lg" />}
                         </div>
 
@@ -253,13 +263,13 @@ const Navbar: React.FC = () => {
                             onMouseLeave={handleSubOptionMouseLeave}
                           >
                             {option.subOptions.map((sub) => (
-                              <a
+                              <Link
                                 key={sub.name}
-                                href={sub.link}
+                                to={sub.link}
                                 className="block px-4 py-3 text-sm text-[#d4d0d0] hover:bg-[#0f0f0f] rounded-2xl last:rounded-b-2xl"
                               >
                                 {sub.name}
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         )}
@@ -403,14 +413,14 @@ const Navbar: React.FC = () => {
                       {option.subOptions && expandedOptions.includes(option.name) && (
                         <div className="pl-4 py-1">
                           {option.subOptions.map((sub) => (
-                            <a
+                            <Link
                               key={sub.name}
-                              href={sub.link}
+                              to={sub.link}
                               className="block py-2 text-sm text-gray-400 hover:text-white"
                               onClick={toggleSidebar} // Close sidebar on subOption click
                             >
                               {sub.name}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       )}

@@ -1,5 +1,6 @@
 // components/CourseSection.tsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface CourseCard {
   title: string;
@@ -26,6 +27,10 @@ const getMargin = (title: string): string => {
 };
 
 const CardComponent: React.FC<CardComponentProps> = ({ heading, courses,singleOnMobile }) => {
+  const navigate = useNavigate();
+  const handleClick = (examTitle: string) => {
+    navigate(`/courses/${examTitle}`);
+  };
   return (
     <section className="text-white flex justify-center">
       <div className="max-w-7xl mx-auto mt-10">
@@ -35,12 +40,14 @@ const CardComponent: React.FC<CardComponentProps> = ({ heading, courses,singleOn
           {courses.map((course, index) => (
             <div
               key={index}
-              className={`rounded-2xl p-6 flex flex-col justify-between w-[358.4px] md:w-[770px] h-[128px] lg:w-[320px] lg:h-[240px] relative overflow-hidden ${singleOnMobile ? (index !== 0 ? 'hidden lg:flex' : 'flex') : 'flex'} flex`}
+              className={`rounded-2xl p-6 flex flex-col cursor-pointer justify-between w-[358.4px] md:w-[770px] h-[128px] lg:w-[320px] lg:h-[240px] relative overflow-hidden ${singleOnMobile ? (index !== 0 ? 'hidden lg:flex' : 'flex') : 'flex'} flex`}
               style={{ backgroundColor: course.bgColor || '#111' }}
+              onClick={() => handleClick(course.title)}
             >
-              <div>
+              <div className='cursor-pointer'>
                 <h3 className="text-lg lg:text-[20px] font-semibold mb-4">{course.title}</h3>
-                <button className={`text-blue-500 font-medium flex items-center gap-1 ${getMargin(course.title)}`}>
+                <button className={`text-blue-500 font-medium flex items-center gap-1 ${getMargin(course.title)} cursor-pointer`}
+                >
                   {course.buttonText} <span>›</span>
                 </button>
               </div>

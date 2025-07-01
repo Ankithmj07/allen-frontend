@@ -1,0 +1,110 @@
+import React, { useState } from "react";
+import { useEnroll } from '../../contexts/EnrollContext';
+
+
+type FeeCardProps = {
+  price: number;
+  tax: number;
+  languages: string[];
+  selectedLanguage: string;
+  startingDate: string;
+  onLanguageChange: (lang: string) => void;
+  onEnroll: () => void;
+  isMobileView?: boolean;
+};
+
+const FeeCard: React.FC<FeeCardProps> = ({
+  price,
+  tax,
+  languages,
+  selectedLanguage,
+  startingDate,
+  onLanguageChange,
+  onEnroll,
+  isMobileView = false,
+ 
+  
+}) => {
+    const [isDisabled, setDisabled] = useState(false);
+    const { closeFeeCard } = useEnroll();
+    const handleDisableClick = () => {
+        setDisabled(true)
+    }
+   
+
+  
+
+  return (
+    <div className={`${
+        isMobileView
+          ? "fixed inset-x-0 bottom-0 z-50 bg-[#212121] rounded-t-2xl p-6"
+          : "hidden lg:block bg-[#212121] p-6 rounded-2xl"
+      } w-full max-w-[387px] h-[378px] mx-auto`}>
+        <button
+            onClick={closeFeeCard}
+            className="absolute top-1 right-3 text-white text-xl"
+            >
+                      ✕
+        </button>
+        <div className="flex justify-between">
+            <div className="text-[18px] font-bold text-white">Course Fee</div>
+            <div className="flex items-end space-x-2">
+                <span className="text-[18px] font-semibold text-white">₹ {price.toLocaleString()}</span>
+                <span className="text-[12px] text-[#848484] mb-[2px]">+ ₹{tax} Taxes</span>
+            </div>
+        </div>
+
+      <div className="mt-8 border-1 border-[#424547] py-2 px-4 rounded-2xl h-[200px]">
+        <label className="block text-[14px] text-gray-400 mb-4">Select course language</label>
+        <div className="flex space-x-2 mb-4">
+          {languages.map((lang) => (
+            <button
+              key={lang}
+              onClick={() => onLanguageChange(lang)}
+              className={`px-4 py-1 rounded-lg border ${
+                selectedLanguage === lang
+                  ? "bg-[#2e3357] border-[#2F80ED] text-white"
+                  : "border-gray-700 text-gray-300 hover:bg-gray-800"
+              } text-sm py-2`}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
+        <div className="flex justify-center">
+            <hr className="w-full"></hr>
+        </div>
+        
+        <div className="mt-2">
+            <label className="block text-[14px] mb-4 text-gray-400">Select starting date</label>
+            <button
+             className={`px-6 rounded-lg border ${
+                isDisabled
+                  ? "bg-[#2e3357] border-[#2F80ED] text-white"
+                  : "border-gray-700 text-gray-300 hover:bg-gray-800"
+              } text-sm text-white py-2`} 
+            onClick={() => handleDisableClick()}
+            >
+              {startingDate}
+            </button>
+        </div>
+      </div>
+
+      
+
+      <button
+        className={`w-full mt-6 py-2 rounded-full cursor-pointer ${
+          isDisabled
+            ? "bg-[#0266DA] hover:bg-blue-700 text-white"
+            : "bg-gray-800 text-gray-500 cursor-not-allowed" 
+        }`}
+        onClick={onEnroll}
+        disabled={isDisabled}
+      >
+        Enroll Now
+      </button>
+    </div>
+  );
+};
+
+export default FeeCard;

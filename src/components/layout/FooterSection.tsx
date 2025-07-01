@@ -1,8 +1,11 @@
 import React from "react";
 import { FaYoutube, FaInstagram, FaFacebookF, FaXTwitter, FaLinkedinIn } from "react-icons/fa6";
-import isoIcon from "../../assets/isoIcon.png"; // Add ISO icon if needed
+import isoIcon from "../../assets/isoIcon.png"; 
+import { useEnroll } from '../../contexts/EnrollContext';
 
 const FooterSection: React.FC = () => {
+  const { openFeeCard } = useEnroll();
+
   return (
     <div className='bg-[#0f0f0f] lg:container mx-auto lg:px-[224px] mt-0 pt-0'>
         <footer className="bg-[#0f0f0f] text-white px-4 lg:px-4 md:px-8 py-12 text-[0.65rem] md:text-[0.75rem] lg:text-sm">
@@ -110,6 +113,14 @@ const FooterSection: React.FC = () => {
             <img src={isoIcon} alt="ISO Certified" className="w-15 h-15 md:w-18 md:h-18" />
           </div>
         </footer>
+        <div className="lg:hidden fixed bottom-0 px-6 py-2 left-0 right-0 bg-[#212121] z-50">
+            <button
+            className="w-full text-white text-sm py-4 font-semibold bg-[#0266DA] hover:bg-blue-700 rounded-4xl"
+            onClick={openFeeCard}
+            >
+            Select batch and Enroll Now
+          </button>
+        </div>
     </div>
   );
 };
