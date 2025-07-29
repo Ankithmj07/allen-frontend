@@ -91,6 +91,7 @@ const Navbar: React.FC = () => {
 
   const toggleDropdown = () => {
     if (!isDesktop) setDropdownOpen((prev) => !prev);
+    navigate('/profile');
   };
 
   const closeDropdown = () => {

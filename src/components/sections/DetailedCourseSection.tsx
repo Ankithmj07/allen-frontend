@@ -10,6 +10,7 @@ import appImg from '../../assets/detailApp.png';
 import SliderComponent from "./SliderComponent";
 import { useParams, useLocation } from 'react-router-dom';
 import { useEnroll } from '../../contexts/EnrollContext';
+import { useNavigate } from 'react-router-dom';
 
 const aboutImages = [classImg, doubtImg, testImg, studyImg, appImg];
 
@@ -20,13 +21,14 @@ const DetailedCourseSection: React.FC = () => {
   const courseId = searchParams.get('id');
 
   const [language, setLanguage] = useState("Hindi + English");
+  const [selectedDate, setSelectedDate] = useState("");
   const [detailedCourses, setDetailedCourses] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { isFeeCardOpen, closeFeeCard } = useEnroll();
+   const { openFeeCard } = useEnroll();
+   const { setSelectedCourse } = useEnroll();
+   const navigate = useNavigate();
 
-  const handleEnroll = () => {
-    console.log("Enroll clicked");
-  };
 
   // ✅ Fetch course details
   useEffect(() => {
@@ -62,17 +64,20 @@ const DetailedCourseSection: React.FC = () => {
     };
   }, [isFeeCardOpen, closeFeeCard]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.toLocaleString('en-US', { month: 'short' });
-    const year = date.getFullYear();
-    return `${day} ${month}, ${year}`;
-  };
 
   if (loading) return <div>Loading...</div>;
   if (!detailedCourses) return <div>No course data found</div>;
 
+  const handleEnroll = () => {
+    console.log("fuck you")
+    if (detailedCourses) {
+      setSelectedCourse(detailedCourses);
+      
+    }
+    navigate('/enroll');
+  };
+
+  console.log(detailedCourses)
   return (
     <div className='bg-[#0f0f0f] lg:container mx-auto lg:px-[224px] mt-0 pt-20'>
       {/* Mobile Video */}
@@ -142,8 +147,10 @@ const DetailedCourseSection: React.FC = () => {
             tax={detailedCourses.taxes}
             languages={detailedCourses.language}
             selectedLanguage={language}
-            startingDate={formatDate(detailedCourses.startDate)}
+            startingDate={Array.isArray(detailedCourses.startDate) ? detailedCourses.startDate : []}
+            selectedDate={selectedDate}
             onLanguageChange={(lang) => setLanguage(lang)}
+            onDateChange={(date) => setSelectedDate(date)}
             onEnroll={handleEnroll}
           />
         )}
@@ -159,8 +166,10 @@ const DetailedCourseSection: React.FC = () => {
               tax={detailedCourses.taxes}
               languages={detailedCourses.language}
               selectedLanguage={language}
-              startingDate={formatDate(detailedCourses.startDate)}
+              startingDate={detailedCourses.startDate}
+              selectedDate={selectedDate}
               onLanguageChange={(lang) => setLanguage(lang)}
+              onDateChange={(date) => setSelectedDate(date)}
               onEnroll={handleEnroll}
               isMobileView={true}
             />
@@ -205,6 +214,14 @@ const DetailedCourseSection: React.FC = () => {
           )}
         </div>
       </div>
+      <div className="lg:hidden fixed bottom-0 px-6 py-2 left-0 right-0 bg-[#212121] z-50">
+            <button
+            className="w-full text-white text-sm py-4 font-semibold bg-[#0266DA] hover:bg-blue-700 rounded-4xl"
+            onClick={openFeeCard}
+            >
+            Select batch and Enroll Now
+          </button>
+        </div>
     </div>
   );
 };

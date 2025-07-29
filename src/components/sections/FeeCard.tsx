@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useEnroll } from '../../contexts/EnrollContext';
 
 
@@ -7,8 +7,10 @@ type FeeCardProps = {
   tax: number;
   languages: string[];
   selectedLanguage: string;
-  startingDate: string;
+  startingDate: string[];
+  selectedDate: string; 
   onLanguageChange: (lang: string) => void;
+  onDateChange: (date: string) => void;  
   onEnroll: () => void;
   isMobileView?: boolean;
 };
@@ -19,21 +21,42 @@ const FeeCard: React.FC<FeeCardProps> = ({
   languages,
   selectedLanguage,
   startingDate,
+  selectedDate,
   onLanguageChange,
+  onDateChange,
   onEnroll,
   isMobileView = false,
- 
-  
 }) => {
-    const [isDisabled, setDisabled] = useState(false);
+    //const [isDisabled, setDisabled] = useState(false);
     const { closeFeeCard } = useEnroll();
-    const handleDisableClick = () => {
-        setDisabled(true)
-    }
+    //const handleDisableClick = () => {
+        //setDisabled(true)
+    //}
+
+    const { setCourseLanguage, setCourseDate } = useEnroll();
+    setCourseLanguage(selectedLanguage)
+
+    const formatDate = (dateString: string) => {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.toLocaleString('en-US', { month: 'short' });
+      const year = date.getFullYear();
+      return `${day} ${month}, ${year}`;
+    };
+    
+    const handleLanguageClick = (lang: string) => {
+      onLanguageChange(lang);
+      setCourseLanguage(lang);
+      console.log(lang)
+    };
+
+    const handleDateClick = (date: string) => {
+      onDateChange(date);
+      setCourseDate(formatDate(date));
+      console.log(date)
+    };
+    
    
-
-  
-
   return (
     <div className={`${
         isMobileView
@@ -60,7 +83,7 @@ const FeeCard: React.FC<FeeCardProps> = ({
           {languages.map((lang) => (
             <button
               key={lang}
-              onClick={() => onLanguageChange(lang)}
+              onClick={() => handleLanguageClick(lang)}
               className={`px-4 py-1 rounded-lg border ${
                 selectedLanguage === lang
                   ? "bg-[#2e3357] border-[#2F80ED] text-white"
@@ -77,16 +100,22 @@ const FeeCard: React.FC<FeeCardProps> = ({
         
         <div className="mt-2">
             <label className="block text-[14px] mb-4 text-gray-400">Select starting date</label>
+            <div className="flex gap-2 mb-4">
+            {Array.isArray(startingDate) && startingDate.map((date) => (
             <button
-             className={`px-6 rounded-lg border ${
-                isDisabled
+              key={date}
+              onClick={() => handleDateClick(date)}
+              className={`px-4 py-1 rounded-lg border ${
+                selectedDate === date
                   ? "bg-[#2e3357] border-[#2F80ED] text-white"
                   : "border-gray-700 text-gray-300 hover:bg-gray-800"
-              } text-sm text-white py-2`} 
-            onClick={() => handleDisableClick()}
+              } text-sm py-2`}
             >
-              {startingDate}
+              {formatDate(date)}
             </button>
+          ))}
+
+          </div>
         </div>
       </div>
 
@@ -94,12 +123,12 @@ const FeeCard: React.FC<FeeCardProps> = ({
 
       <button
         className={`w-full mt-6 py-2 rounded-full cursor-pointer ${
-          isDisabled
+          selectedDate
             ? "bg-[#0266DA] hover:bg-blue-700 text-white"
             : "bg-gray-800 text-gray-500 cursor-not-allowed" 
         }`}
         onClick={onEnroll}
-        disabled={isDisabled}
+        disabled={!selectedLanguage || !selectedDate}
       >
         Enroll Now
       </button>
