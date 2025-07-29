@@ -6,6 +6,7 @@ import Orders from "../sections/Orders";
 import ReferFriend from "../sections/ReferFriend";
 import Support from "../sections/Support";
 import Settings from "../sections/Settings";
+import { useAuth } from "../../contexts/AuthContext";
 
 const menuItems = [
   { id: "personal", label: "Personal details", icon: <FaUser /> },
@@ -20,6 +21,7 @@ const menuItems = [
 const ProfileSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState("personal");
   const [isDark, setIsDark] = useState(true);
+  const { token, student } = useAuth();
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -39,6 +41,15 @@ const ProfileSection: React.FC = () => {
         return null;
     }
   };
+
+  if (!token || !student) {
+    return (
+      <div className="text-center py-20 text-white bg-[#121212] min-h-screen">
+        <h1 className="text-2xl font-semibold">You are not logged in</h1>
+        <p className="mt-4 text-gray-400">Please login to access your profile.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#0f0f0f] lg:container mx-auto lg:px-[150px] mt-10 pt-0">
