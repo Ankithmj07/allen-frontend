@@ -7,7 +7,7 @@ const HeroSection: React.FC = () => {
   const { isDarkMode } = useDarkMode();
   return (
     <div className={`${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#edf2fa]'}`}>
-        <div className='container mx-auto lg:px-[40px] xl:px-[130px] 2xl:px-[224px] grid grid-cols-1 lg:grid-cols-2 items-center mt-0 pt-20 md:pt-10'>
+        <div className='container mx-auto lg:px-[30px] xl:px-[130px] 2xl:px-[224px] grid grid-cols-1 lg:grid-cols-2 items-center mt-0 pt-20 md:pt-10'>
             <section className={`py-8 px-6 text-center lg:text-left mt-4 md:mt-15 lg:mt-10 pt-0 ${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'}`}>
               <h1 className="text-xl lg:text-[28px] xl:text-[32px] font-bold leading-tight">
                 Get up to 90% scholarship on <br className="hidden lg:block" />
