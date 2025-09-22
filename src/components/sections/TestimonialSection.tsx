@@ -37,7 +37,7 @@ const Testimonials: React.FC = () => {
 
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#fff]'} `}>
-    <div className={`lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
+    <div className="xl:container mx-auto xl:px-[110px] 2xl:px-[224px] mt-0 pt-0">
     <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} py-12 px-4`}>
       <h2 className="text-lg md:text-[24px] mt-0 lg:mt-5 font-bold text-left lg:text-center">Testimonials from our students</h2>
       <div className="overflow-x-auto scrollbar-hide">

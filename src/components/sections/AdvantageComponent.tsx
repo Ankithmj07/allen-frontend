@@ -30,7 +30,7 @@ const AppAdvantage: React.FC<AppAdvantageProps> = ({
 
   return (
     <div className={` ${bgClass} ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
-    <div className={`lg:container lg:px-[130px] mx-auto 2xl:px-[224px] mt-0 pt-5 md:pt-8`}>
+    <div className={`xl:container lg:px-[130px] mx-auto 2xl:px-[224px] mt-0 pt-5 md:pt-8`}>
       <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} px-6 pb-6 md:pb-12`}>
         <h2 className="text-lg md:text-2xl text-left md:text-center md:text-2xl font-bold mb-8 md:mb-10">
           {title}

@@ -10,7 +10,7 @@ const FooterSection: React.FC = () => {
 
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#edf2fa]'} `}>
-    <div className={` lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
+    <div className={` xl:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
         <footer className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} px-4 lg:px-4 md:px-8 py-12 text-[0.65rem] md:text-[0.75rem] lg:text-sm`}>
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
             {/* About */}

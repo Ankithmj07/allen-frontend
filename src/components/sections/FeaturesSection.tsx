@@ -38,7 +38,7 @@ const WhyAllenOnline: React.FC = () => {
   const { isDarkMode } = useDarkMode();
   return (
     <div className='lg:container xl:px-[100px] 2xl:px-0 mx-auto'>
-    <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} py-12 px-4`}>
+    <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} py-12 xl:px-4 2xl:px-4 lg:px-0`}>
       <h2 className="text-lg lg:text-[24px] mt-3 lg:mt-13 font-bold text-left lg:text-center">Why ALLEN Online</h2>
       <div className=" overflow-x-auto scrollbar-hide">
         <div className="flex gap-6 px-4 min-w-[800px] mt-9 md:mt-15">
