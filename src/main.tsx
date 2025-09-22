@@ -5,15 +5,18 @@ import './index.css'
 import App from './App.tsx'
 import { AuthProvider } from './contexts/AuthContext';
 import { EnrollProvider } from './contexts/EnrollContext';
+import { DarkModeProvider } from './contexts/DarkModeContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-    <AuthProvider>
-      <EnrollProvider>
-      <App />
-      </EnrollProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <EnrollProvider>
+          <DarkModeProvider>
+            <App />
+          </DarkModeProvider>
+        </EnrollProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -7,6 +7,7 @@ import ReferFriend from "../sections/ReferFriend";
 import Support from "../sections/Support";
 import Settings from "../sections/Settings";
 import { useAuth } from "../../contexts/AuthContext";
+import { useDarkMode } from "../../contexts/DarkModeContext";
 
 const menuItems = [
   { id: "personal", label: "Personal details", icon: <FaUser /> },
@@ -20,8 +21,10 @@ const menuItems = [
 
 const ProfileSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState("personal");
-  const [isDark, setIsDark] = useState(true);
   const { token, student } = useAuth();
+  const {isDarkMode, setIsDarkMode} = useDarkMode();
+
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -52,7 +55,8 @@ const ProfileSection: React.FC = () => {
   }
 
   return (
-    <div className="bg-[#0f0f0f] lg:container mx-auto lg:px-[150px] mt-10 pt-0">
+    <div className={` ${isDarkMode ? 'bg-[#0f0f0f] text-white' : 'bg-[#edf2fa] text-black'} `}>
+    <div className="lg:container mx-auto lg:px-[40px] 2xl:px-[150px]  mt-10 pt-0">
         <div className="px-6 pt-20 lg:px-10 lg:pt-10 border-b border-neutral-800 pb-5">
           <h1 className="text-lg lg:text-xl font-semibold">Your profile</h1>
         </div>
@@ -60,23 +64,23 @@ const ProfileSection: React.FC = () => {
     <div className="block lg:hidden flex-1 p-6">
         <PersonalComponent></PersonalComponent>
     </div>
-    <div className="hidden min-h-screen text-white lg:flex">
+    <div className="hidden min-h-screen lg:flex">
       {/* Sidebar */}
 
       <div className="w-90 px-15 pt-12 border-r border-neutral-800">
-        <div className="flex items-center justify-between px-4 py-3 bg-neutral-800 rounded-lg w-full max-w-xs mb-5">
-            <span className="text-white text-sm font-medium">Site Theme</span>
+        <div className="flex items-center justify-between px-4 py-3  rounded-lg w-full max-w-xs mb-5">
+            <span className="text-sm font-medium">Site Theme</span>
             <div className="flex items-center space-x-2">
-              <span className="text-white text-sm">{isDark ? "Dark" : "Light"}</span>
+              <span className=" text-sm">{isDarkMode ? "Dark" : "Light"}</span>
               <button
-                onClick={() => setIsDark(!isDark)}
+                onClick={() => toggleTheme()}
                 className={`w-10 h-5 flex items-center rounded-full p-1 duration-300 ease-in-out ${
-                  isDark ? "bg-[#3D3D3D]" : "bg-gray-300"
+                  isDarkMode ? "bg-[#3D3D3D]" : "bg-gray-300"
                 }`}
               >
                 <div
-                  className={`w-4 h-4 rounded-full bg-white shadow-md transform duration-300 ease-in-out ${
-                    isDark ? "translate-x-5" : "translate-x-0"
+                  className={`w-4 h-4 rounded-full  shadow-md transform duration-300 ease-in-out ${
+                    isDarkMode ? "translate-x-5 bg-white" : "translate-x-0 bg-black"
                   }`}
                 />
               </button>
@@ -89,10 +93,15 @@ const ProfileSection: React.FC = () => {
             <div
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer ${
-                activeTab === item.id
-                  ? "bg-white text-black font-semibold"
-                  : "text-gray-300 hover:bg-neutral-800"
+              className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer 
+                ${
+                  activeTab === item.id
+                  ? isDarkMode
+                    ? "bg-white text-black font-semibold" // Active tab in light mode
+                    : "bg-white text-black font-semibold" // Active tab in dark mode
+                  : isDarkMode
+                  ? "text-[#bcbdbd] hover:bg-neutral-800" // Inactive tab dark mode
+                  : "text-[#494a4a] hover:bg-gray-200" // Inactive tab light mode
               }`}
             >
               <div className="flex items-center gap-4">
@@ -108,13 +117,14 @@ const ProfileSection: React.FC = () => {
           ))}
         </nav>
 
-        <div className="mt-10 text-xs text-gray-500">PRIVACY POLICY</div>
+        <div className={`${isDarkMode ? 'text-[#bcbdbd]' :'text-[#494a4a]'} mt-10 text-xs`}>PRIVACY POLICY</div>
       </div>
 
       {/* Content */}
       <div className="hidden lg:block flex-1 p-6">
         {renderTabContent()}
       </div>
+    </div>
     </div>
     </div>
   );

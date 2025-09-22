@@ -4,6 +4,7 @@ import NeetImg from '../../assets/neet.png'
 import Class10Img from '../../assets/class10.png'
 import WhyAllenOnline from'./FeaturesSection'
 import CardComponent from './CardComponent';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 const OnlineCourses = [
     { title: 'JEE', image: JeeImg, buttonText:'View'},
@@ -13,8 +14,9 @@ const OnlineCourses = [
 
 
 const CourseCategories: React.FC = () => {
+  const { isDarkMode } = useDarkMode();
   return (
-    <div className="bg-[#1d1d1d] lg:container mx-auto lg:px-[224px] mt-0 pt-0">
+    <div className={`${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-white'}  mx-auto  2xl:px-[224px] mt-0 pt-0`}>
         <CardComponent
             heading="Discover the perfect online course"
             courses={OnlineCourses}

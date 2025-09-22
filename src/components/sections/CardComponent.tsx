@@ -1,11 +1,13 @@
 // components/CourseSection.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 interface CourseCard {
   title: string;
   image: string;
   bgColor?: string;
+  lightBg?:string;
   buttonText:string;
 }
 
@@ -28,11 +30,12 @@ const getMargin = (title: string): string => {
 
 const CardComponent: React.FC<CardComponentProps> = ({ heading, courses,singleOnMobile }) => {
   const navigate = useNavigate();
+  const { isDarkMode } = useDarkMode();
   const handleClick = (examTitle: string) => {
     navigate(`/courses/${examTitle}`);
   };
   return (
-    <section className="text-white flex justify-center">
+    <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} flex justify-center`}>
       <div className="max-w-7xl mx-auto mt-10">
         <h2 className="text-lg md:text-2xl font-semibold mb-6">{heading}</h2>
 
@@ -41,7 +44,7 @@ const CardComponent: React.FC<CardComponentProps> = ({ heading, courses,singleOn
             <div
               key={index}
               className={`rounded-2xl p-6 flex flex-col cursor-pointer justify-between w-[358.4px] md:w-[770px] h-[128px] lg:w-[320px] lg:h-[240px] relative overflow-hidden ${singleOnMobile ? (index !== 0 ? 'hidden lg:flex' : 'flex') : 'flex'} flex`}
-              style={{ backgroundColor: course.bgColor || '#111' }}
+              style={{ backgroundColor: isDarkMode ? course.bgColor || '#111' : course.lightBg || '#edf2fa' }}
               onClick={() => handleClick(course.title)}
             >
               <div className='cursor-pointer'>

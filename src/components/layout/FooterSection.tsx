@@ -1,19 +1,22 @@
 import React from "react";
 import { FaYoutube, FaInstagram, FaFacebookF, FaXTwitter, FaLinkedinIn } from "react-icons/fa6";
 import isoIcon from "../../assets/isoIcon.png"; 
+import { useDarkMode } from '../../contexts/DarkModeContext';
 //import { useEnroll } from '../../contexts/EnrollContext';
 
 const FooterSection: React.FC = () => {
   //const { openFeeCard } = useEnroll();
+  const { isDarkMode } = useDarkMode();
 
   return (
-    <div className='bg-[#0f0f0f] lg:container mx-auto lg:px-[224px] mt-0 pt-0'>
-        <footer className="bg-[#0f0f0f] text-white px-4 lg:px-4 md:px-8 py-12 text-[0.65rem] md:text-[0.75rem] lg:text-sm">
+    <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#edf2fa]'} `}>
+    <div className={` lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
+        <footer className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} px-4 lg:px-4 md:px-8 py-12 text-[0.65rem] md:text-[0.75rem] lg:text-sm`}>
           <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
             {/* About */}
             <div>
               <h3 className="font-semibold mb-3">About</h3>
-              <ul className="space-y-4 text-white">
+              <ul className="space-y-4">
                 <li>About us</li>
                 <li>Blog</li>
                 <li>News</li>
@@ -29,7 +32,7 @@ const FooterSection: React.FC = () => {
             {/* Help & Support */}
             <div>
               <h3 className="font-semibold mb-3">Help & Support</h3>
-              <ul className="space-y-4 text-white">
+              <ul className="space-y-4">
                 <li>Refund policy</li>
                 <li>Transfer policy</li>
                 <li>Terms & Conditions</li>
@@ -40,7 +43,7 @@ const FooterSection: React.FC = () => {
             {/* Popular goals */}
             <div>
               <h3 className="font-semibold mb-3">Popular goals</h3>
-              <ul className="space-y-4 text-white">
+              <ul className="space-y-4">
                 <li>NEET Coaching</li>
                 <li>JEE Coaching</li>
                 <li>6th to 10th</li>
@@ -50,7 +53,7 @@ const FooterSection: React.FC = () => {
             {/* Courses */}
             <div>
               <h3 className="font-semibold mb-3">Courses</h3>
-              <ul className="space-y-4 text-white">
+              <ul className="space-y-4">
                 <li>Online Courses</li>
                 <li>Distance Learning</li>
                 <li>Online Test Series</li>
@@ -64,7 +67,7 @@ const FooterSection: React.FC = () => {
             {/* Centers */}
             <div>
               <h3 className="font-semibold mb-3">Centers</h3>
-              <ul className="space-y-4 text-white">
+              <ul className="space-y-4">
                 <li>Kota</li>
                 <li>Bangalore</li>
                 <li>Indore</li>
@@ -76,7 +79,7 @@ const FooterSection: React.FC = () => {
             {/* Exam information */}
             <div>
               <h3 className="font-semibold mb-3">Exam information</h3>
-              <ul className="space-y-4 text-white">
+              <ul className="space-y-4 ">
                 <li>JEE Main</li>
                 <li>JEE Advanced</li>
                 <li>NEET UG</li>
@@ -97,7 +100,7 @@ const FooterSection: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-center md:justify-between items-center gap-4 text-white text-xs">
             {/* Social Icons */}
             <div className="space-y-5">
-                <div className="flex justify-center md:justify-start gap-4 text-lg">
+                <div className={`flex justify-center md:justify-start gap-4 text-lg ${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'}`}>
                   <FaYoutube />
                   <FaInstagram />
                   <FaFacebookF />
@@ -106,7 +109,7 @@ const FooterSection: React.FC = () => {
                 </div>
 
                 {/* Copyright */}
-                <p className="text-center text-sm text-[#BCBDBD]">ALLEN Career Institute Pvt. Ltd. © All Rights Reserved.</p>
+                <p className={`text-center text-sm  ${isDarkMode ? 'text-[#bcbdbd]' : 'text-[#494A4A]'}`}>ALLEN Career Institute Pvt. Ltd. © All Rights Reserved.</p>
             </div>
 
             {/* ISO Icon */}
@@ -114,6 +117,7 @@ const FooterSection: React.FC = () => {
           </div>
         </footer>
         
+    </div>
     </div>
   );
 };

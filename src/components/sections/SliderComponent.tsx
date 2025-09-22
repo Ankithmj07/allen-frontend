@@ -56,7 +56,7 @@ const SliderComponent: React.FC<SliderProps> = ({
   const currentSlide = slides[currentIndex];
 
   return (
-    <div className="bg-[#0f0f0f] overflow-x-auto scrollbar-hide">
+    <div className=" overflow-x-auto scrollbar-hide">
       <div className="flex flex-col items-center justify-center text-center pt-6 md:px-2 pb-4">
           <img
             src={

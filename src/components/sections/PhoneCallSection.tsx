@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import contactImg from "../../assets/contact.png";
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 const classes = ["6th", "7th", "8th", "9th", "10th", "11th", "12th"];
 const goals = ["NEET", "JEE Mains", "JEE Advanced"];
@@ -26,6 +27,7 @@ const PhoneCallComponent: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const { isDarkMode } = useDarkMode();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -68,8 +70,9 @@ const PhoneCallComponent: React.FC = () => {
   };
 
   return (
-    <div className='bg-[#1d1d1d] lg:container mx-auto lg:px-[224px] mt-0 pt-0'>
-      <div className="bg-[#1d1d1d] flex flex-col lg:flex-row items-center justify-center px-4 py-12">
+    <div className={` ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'}`}>
+    <div className={` lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
+      <div className="flex flex-col lg:flex-row items-center justify-center px-4 py-12">
         {/* Left Illustration */}
         <div className="hidden lg:block lg:mb-0 lg:mr-10">
           <img src={contactImg} alt="Illustration" className="w-90" />
@@ -78,7 +81,7 @@ const PhoneCallComponent: React.FC = () => {
         {/* Right Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-[#0f0f0f] text-white p-6 rounded-2xl w-full max-w-2xl space-y-4"
+          className={`${isDarkMode ? 'bg-[#0f0f0f] text-white' : 'bg-[#fff] text-[#1d1d1d]'} p-6 rounded-2xl w-full max-w-2xl space-y-4`}
         >
           <h2 className="text-lg lg:text-xl font-bold border-b border-gray-300 pb-4">
             Request a callback
@@ -94,7 +97,7 @@ const PhoneCallComponent: React.FC = () => {
                 onChange={handleChange}
                 required
                 placeholder="Ex: Rohit Singh"
-                className="w-full px-4 py-2 md:py-3 rounded-md bg-[#1d1d1d] border border-gray-600"
+                className={`w-full px-4 py-2 md:py-3 rounded-md ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} border border-gray-600`}
               />
             </div>
             <div>
@@ -105,7 +108,7 @@ const PhoneCallComponent: React.FC = () => {
                 onChange={handleChange}
                 required
                 placeholder="Ex: +91 9876543210"
-                className="w-full px-4 py-2 md:py-3 rounded-md bg-[#1d1d1d] border border-gray-600"
+                className={`w-full px-4 py-2 md:py-3 rounded-md ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} border border-gray-600`}
               />
             </div>
           </div>
@@ -118,7 +121,7 @@ const PhoneCallComponent: React.FC = () => {
                 name="class"
                 value={formData.class}
                 onChange={handleChange}
-                className="w-full px-4 py-2 md:py-3 rounded-md bg-[#1d1d1d] border border-gray-600"
+                className={`w-full px-4 py-2 md:py-3 rounded-md ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} border border-gray-600`}
               >
                 {classes.map((cls) => (
                   <option key={cls} value={cls}>{cls}</option>
@@ -131,7 +134,7 @@ const PhoneCallComponent: React.FC = () => {
                 name="goal"
                 value={formData.goal}
                 onChange={handleChange}
-                className="w-full px-4 py-2 md:py-3 rounded-md bg-[#1d1d1d] border border-gray-600"
+                className={`w-full px-4 py-2 md:py-3 rounded-md ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} border border-gray-600`}
               >
                 {goals.map((goal) => (
                   <option key={goal} value={goal}>{goal}</option>
@@ -148,7 +151,7 @@ const PhoneCallComponent: React.FC = () => {
                 name="course"
                 value={formData.course}
                 onChange={handleChange}
-                className="w-full px-4 py-2 md:py-3 rounded-md bg-[#1d1d1d] border border-gray-600"
+                className={`w-full px-4 py-2 md:py-3 rounded-md ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} border border-gray-600`}
               >
                 {courses.map((course) => (
                   <option key={course} value={course}>{course}</option>
@@ -161,7 +164,7 @@ const PhoneCallComponent: React.FC = () => {
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
-                className="w-full px-4 py-3 md:py-3 rounded-md bg-[#1d1d1d] border border-gray-600"
+                className={`w-full px-4 py-3 md:py-3 rounded-md ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} border border-gray-600`}
               >
                 {states.map((state) => (
                   <option key={state} value={state}>{state}</option>
@@ -171,8 +174,8 @@ const PhoneCallComponent: React.FC = () => {
           </div>
 
           {/* T&C + Submit */}
-          <p className="text-xs text-[#BCBDBD] text-center">
-            By continuing, you agree to our <a href="#" className="underline text-[#ffff]">Terms & Conditions</a>
+          <p className={`text-xs ${isDarkMode ? 'text-[#bcbdbd]' : 'text-[#494A4A]'} text-center`}>
+            By continuing, you agree to our <a href="#" className={`underline ${isDarkMode ? ' text-white' : 'text-[#1d1d1d]'}`}>Terms & Conditions</a>
           </p>
 
           {message && (
@@ -192,6 +195,7 @@ const PhoneCallComponent: React.FC = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };

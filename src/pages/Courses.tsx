@@ -8,9 +8,13 @@ import TestimonialSection from '../components/sections/TestimonialSection';
 import PhoneCallComponent from '../components/sections/PhoneCallSection';
 import download2Img from '../assets/download2.png';
 import download2MobileImg from '../assets/download2Mobile.png';
+import downloadLight from '../assets/downloadLight.png'
+import downLightMobile from '../assets/downloadLightMobile.png'
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 
 const Courses: React.FC = () => {
+  const { isDarkMode } = useDarkMode();
   return (
     <>
       <CoachingSection></CoachingSection>
@@ -18,15 +22,15 @@ const Courses: React.FC = () => {
       <CourseComponent></CourseComponent>
       <TrustSection></TrustSection>
       <NeetPrepSection></NeetPrepSection>
-      <div className='bg-[#1d1d1d]'>
-        <div className='hidden md:block flex justify-center lg:container mx-auto px-4 lg:px-[238px] mt-0 pt-10'>
-          <img src={download2Img} alt='Download'></img>
+      <div className={`${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#fff]'} pb-6`}>
+        <div className='hidden md:block flex justify-center lg:container mx-auto px-4 lg:px-[130px] 2xl:px-[224px] mt-0 pt-10'>
+          <img src={isDarkMode ? download2Img : downloadLight} alt='Download'></img>
         </div>
-        <div className='block sm:hidden flex justify-center lg:container mx-auto px-4 lg:px-[224px] mt-0 pt-10'>
-          <img src={download2MobileImg} alt='Download'></img>
+        <div className='block sm:hidden flex justify-center lg:container mx-auto px-4 lg:px-[130px] 2xl:px-[224px] mt-0 pt-10'>
+          <img src={isDarkMode ? download2MobileImg : downLightMobile} alt='Download'></img>
         </div>
-        <PhoneCallComponent></PhoneCallComponent>
       </div>
+      <PhoneCallComponent></PhoneCallComponent>   
       <TestimonialSection></TestimonialSection>
     </>
   );

@@ -1,14 +1,17 @@
 import React from 'react';
 import champoinImg from '../../assets/champions.png'
 import championMobileImg from '../../assets/championMobile.png'
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
-const Champions: React.FC = () => { // Replace with your actual image path
+const Champions: React.FC = () => { 
+  const { isDarkMode } = useDarkMode();
 
   return (
-    <div className='lg:container bg-[#0f0f0f] mx-auto lg:px-[224px] mt-0 pt-0'>
+    <div className={` ${isDarkMode ? 'bg-[#0f0f0f] text-white' : ' bg-[#edf2fa] text-[#0f0f0f]'}`}>
+    <div className={`lg:container ${isDarkMode ? 'bg-[#0f0f0f] text-white' : ' bg-[#edf2fa] text-[#0f0f0f]'} mx-auto lg:px-[130px] 2xl:px-[224px] mt-0 pt-0`}>
     <h2 className="text-lg md:text-[24px] px-4 mt-0 md:mt-0 font-bold text-left md:text-center">Meet our Champions</h2>
-    <section className="bg-[#0f0f0f] py-2 lg:py-5 text-white">
-      <div className="container mx-auto px-4 flex flex-col items-center gap-6">
+    <section className=" py-2 lg:py-5 text-white">
+      <div className=" mx-auto px-4 flex flex-col items-center gap-6">
         <img
           src={champoinImg}
           alt="Champion"
@@ -34,6 +37,7 @@ const Champions: React.FC = () => { // Replace with your actual image path
       </div>
     </section>
     <br/>
+    </div>
     </div>
   );
 };

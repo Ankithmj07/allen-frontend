@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from "react";
 import { Moon, Sun, Settings, BookOpen, HelpCircle, MapPin, Bell } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useDarkMode } from '../../contexts/DarkModeContext';
+import { useNavigate } from 'react-router-dom';
 
 type ProfileDropdownProps = {
     onLogout: () => void;
@@ -8,7 +10,8 @@ type ProfileDropdownProps = {
   
 
 const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const navigate = useNavigate();
+  const {isDarkMode, setIsDarkMode} = useDarkMode();
   const [userInfo, setUserInfo] = useState<{
       name: string;
       classLevel: string;
@@ -22,12 +25,12 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
     
 
 
-  const toggleTheme = () => setDarkMode(!darkMode);
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   return (
-    <div className="w-72 bg-[#1d1d1d] text-white rounded-xl p-4 shadow-xl">
+    <div className={`w-72 ${isDarkMode ? 'text-white bg-[#1d1d1d]' : 'text-[#0f0f0f] bg-white'} rounded-xl p-4 shadow-xl`}>
       <div className="flex items-center justify-between">
-        <div>
+        <div className="hover:cursor-pointer" onClick={() => navigate('/profile')}>
           <p className="font-semibold text-lg">{userInfo?.name}</p>
           <p className="text-sm text-gray-400">Class {userInfo?.classLevel} | {userInfo?.exam}</p>
         </div>
@@ -35,14 +38,14 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
       </div>
 
       {/* Theme toggle */}
-      <div className="mt-4 text-[.625rem] lg:text-sm flex items-center justify-between bg-black p-2 rounded-lg">
+      <div className={`mt-4 text-[.625rem] lg:text-sm flex items-center justify-between ${isDarkMode ? 'bg-black' : 'bg-[#edf2fa]'} p-2 rounded-lg`}>
         <p>Site Theme</p>
         <div
           onClick={toggleTheme}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <span>{darkMode ? "Dark" : "Light"}</span>
-          {darkMode ? <Moon size={18} /> : <Sun size={18} />}
+          <span>{isDarkMode ? "Dark" : "Light"}</span>
+          {isDarkMode ? <Moon size={18} /> : <Sun size={18} />}
         </div>
       </div>
 
@@ -56,7 +59,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
       </div>
 
       {/* Logout Button */}
-      <button className="mt-6 w-full text-sm bg-white text-black rounded-full py-2 font-medium hover:bg-gray-200 cursor-pointer"
+      <button className={`mt-6 w-full text-sm ${isDarkMode ? 'bg-white' : 'bg-[#edf2fa]'} text-black rounded-full py-2 font-medium hover:bg-gray-200 cursor-pointer`}
       onClick={logout}>
         Logout
       </button>

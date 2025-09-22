@@ -1,5 +1,6 @@
 import React from "react";
 import { useEnroll } from '../../contexts/EnrollContext';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 
 type FeeCardProps = {
@@ -34,6 +35,7 @@ const FeeCard: React.FC<FeeCardProps> = ({
     //}
 
     const { setCourseLanguage, setCourseDate } = useEnroll();
+    const { isDarkMode } = useDarkMode();
     setCourseLanguage(selectedLanguage)
 
     const formatDate = (dateString: string) => {
@@ -59,10 +61,10 @@ const FeeCard: React.FC<FeeCardProps> = ({
    
   return (
     <div className={`${
-        isMobileView
-          ? "fixed inset-x-0 bottom-0 z-50 bg-[#212121] rounded-t-2xl p-6"
-          : "hidden lg:block bg-[#212121] p-6 rounded-2xl"
-      } w-full max-w-[387px] h-[378px] mx-auto`}>
+      isMobileView
+        ? `fixed inset-x-0 bottom-0 z-50 ${isDarkMode ? "bg-[#212121]" : "bg-white"} rounded-t-2xl p-6`
+        : `hidden lg:block ${isDarkMode ? "bg-[#212121]" : "bg-white"} p-6 rounded-2xl`
+    } w-full max-w-[387px] h-[378px] mx-auto`}>
         <button
             onClick={closeFeeCard}
             className="absolute top-1 right-3 text-white text-xl"
@@ -70,15 +72,15 @@ const FeeCard: React.FC<FeeCardProps> = ({
                       ✕
         </button>
         <div className="flex justify-between">
-            <div className="text-[18px] font-bold text-white">Course Fee</div>
+            <div className={`text-[18px] font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Course Fee</div>
             <div className="flex items-end space-x-2">
-                <span className="text-[18px] font-semibold text-white">₹ {price.toLocaleString()}</span>
-                <span className="text-[12px] text-[#848484] mb-[2px]">+ ₹{tax} Taxes</span>
+                <span className={`text-[18px] font-semibold ${isDarkMode ? 'text-white' : 'text-black'}`}>₹ {price.toLocaleString()}</span>
+                <span className="text-[12px] text-[#848484] mb-[2px]">+ ₹{tax.toLocaleString()} Taxes</span>
             </div>
         </div>
 
-      <div className="mt-8 border-1 border-[#424547] py-2 px-4 rounded-2xl h-[200px]">
-        <label className="block text-[14px] text-gray-400 mb-4">Select course language</label>
+      <div className={`mt-8 border-1 ${isDarkMode ? 'border-[#424547] text-gray-400' : 'border-[#dcdcdc] text-[#494a4a]'}  py-2 px-4 rounded-2xl h-[200px]`}>
+        <label className="block text-[14px] font-semibold mb-4">Select course language</label>
         <div className="flex space-x-2 mb-4">
           {languages.map((lang) => (
             <button
@@ -86,8 +88,12 @@ const FeeCard: React.FC<FeeCardProps> = ({
               onClick={() => handleLanguageClick(lang)}
               className={`px-4 py-1 rounded-lg border ${
                 selectedLanguage === lang
-                  ? "bg-[#2e3357] border-[#2F80ED] text-white"
-                  : "border-gray-700 text-gray-300 hover:bg-gray-800"
+                ? isDarkMode
+                ? 'bg-[#2e3357] border-[#2F80ED] text-white'
+                : 'bg-[#E0ECFF] border-[#2F80ED] text-[#1D1D1D]'
+              : isDarkMode
+                ? 'border-gray-600 text-[#BCBDBD]'
+                : 'border-gray-300 text-[#4B4B4B]'
               } text-sm py-2`}
             >
               {lang}
@@ -99,7 +105,7 @@ const FeeCard: React.FC<FeeCardProps> = ({
         </div>
         
         <div className="mt-2">
-            <label className="block text-[14px] mb-4 text-gray-400">Select starting date</label>
+            <label className="block text-[14px] mb-4 font-semibold">Select starting date</label>
             <div className="flex gap-2 mb-4">
             {Array.isArray(startingDate) && startingDate.map((date) => (
             <button
@@ -107,8 +113,12 @@ const FeeCard: React.FC<FeeCardProps> = ({
               onClick={() => handleDateClick(date)}
               className={`px-4 py-1 rounded-lg border ${
                 selectedDate === date
-                  ? "bg-[#2e3357] border-[#2F80ED] text-white"
-                  : "border-gray-700 text-gray-300 hover:bg-gray-800"
+                ? isDarkMode
+                  ? 'bg-[#2e3357] border-[#2F80ED] text-white'
+                  : 'bg-[#E0ECFF] border-[#2F80ED] text-[#1D1D1D]'
+                : isDarkMode
+                  ? 'border-gray-600 text-[#BCBDBD]'
+                  : 'border-gray-300 text-[#4B4B4B]'
               } text-sm py-2`}
             >
               {formatDate(date)}
@@ -125,7 +135,7 @@ const FeeCard: React.FC<FeeCardProps> = ({
         className={`w-full mt-6 py-2 rounded-full cursor-pointer ${
           selectedDate
             ? "bg-[#0266DA] hover:bg-blue-700 text-white"
-            : "bg-gray-800 text-gray-500 cursor-not-allowed" 
+            : `${isDarkMode ? "bg-gray-800 text-gray-500" : "bg-gray-300 text-gray-500"} cursor-not-allowed`
         }`}
         onClick={onEnroll}
         disabled={!selectedLanguage || !selectedDate}

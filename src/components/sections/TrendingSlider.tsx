@@ -12,6 +12,7 @@ import trendingMobile1 from '../../assets/trendingMobile1.png';
 //import trendingMobile4 from '../../assets/trendingMobile4.png';
 //import trendingMobile5 from '../../assets/trendingMobile5.png';
 //import trendingMobile6 from '../../assets/trendingMobile6.png';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 
 const mySlides = [
@@ -61,8 +62,9 @@ const mySlides = [
 ];
 
 const TrendingSlider: React.FC = () => {
+  const { isDarkMode } = useDarkMode();
     return (
-        <div className='bg-[#0f0f0f] lg:container mx-auto px-4 py-4 md:py-8'>
+        <div className={`${isDarkMode ? 'bg-[#0f0f0f] text-white' : ' bg-[#edf2fa] text-[#0f0f0f]'} lg:px-[130px] mx-auto px-4 py-4 md:py-8`}>
           <h2 className="text-lg lg:text-[24px] mt-0 md:mt-0 font-bold text-left md:text-center">What's Trending</h2>
            <SliderComponent
                 slides={mySlides}

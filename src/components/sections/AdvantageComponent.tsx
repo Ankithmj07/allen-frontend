@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import downArrow from "../../assets/downArrow.svg";
+import downArrowBlack from "../../assets/downArrowBlack.svg";
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 export interface AdvantageItem {
   title: string;
@@ -24,10 +26,12 @@ const AppAdvantage: React.FC<AppAdvantageProps> = ({
   bgClass,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { isDarkMode } = useDarkMode();
 
   return (
-    <div className={`${bgClass}  lg:container mx-auto lg:px-[224px] mt-0 pt-5 md:pt-8`}>
-      <section className="text-white px-6 pb-6 md:pb-12">
+    <div className={` ${bgClass} ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+    <div className={`lg:container lg:px-[130px] mx-auto 2xl:px-[224px] mt-0 pt-5 md:pt-8`}>
+      <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} px-6 pb-6 md:pb-12`}>
         <h2 className="text-lg md:text-2xl text-left md:text-center md:text-2xl font-bold mb-8 md:mb-10">
           {title}
         </h2>
@@ -44,7 +48,7 @@ const AppAdvantage: React.FC<AppAdvantageProps> = ({
                 <div className="flex justify-between items-center">
                   <h3 className="text-sm lg:text-[18px] font-semibold">{item.title}</h3>
                   <img
-                    src={downArrow}
+                    src={isDarkMode ? downArrow : downArrowBlack}
                     alt="Toggle"
                     className={`w-4 h-4 transform transition-transform duration-300 ${
                       activeIndex === index ? "rotate-180" : ""
@@ -53,7 +57,7 @@ const AppAdvantage: React.FC<AppAdvantageProps> = ({
                 </div>
                 {activeIndex === index && (
                   <div>
-                    <p className="text-sm md:text-[14px] lg:text-[15px] text-gray-300 mt-2 leading-[1.5rem]">
+                    <p className={`text-sm md:text-[14px] lg:text-[15px] ${isDarkMode ? 'text-gray-300' : 'text-[#494A4A]'} mt-2 leading-[1.5rem]`}>
                       {item.description}
                     </p>
                     <div className="lg:hidden md:col-span-3 w-full mt-4">
@@ -89,6 +93,7 @@ const AppAdvantage: React.FC<AppAdvantageProps> = ({
           </button>
         </div>
       </section>
+    </div>
     </div>
   );
 };

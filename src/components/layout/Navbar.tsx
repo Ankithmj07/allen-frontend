@@ -5,10 +5,13 @@ import phoneLogo from '../../assets/phone-call.png';
 import { IoIosNotificationsOutline } from 'react-icons/io';
 import { HiMenu, HiX, HiChevronDown, HiChevronRight } from 'react-icons/hi';
 import logo from '../../assets/logo.svg';
+import logoBlue from '../../assets/logoBlue.svg'
 import LoginModal from '../Modals/LoginModal';
 import ProfileDropdown from '../Modals/ProfileModal';
 import { useAuth } from "../../contexts/AuthContext";
 import menuItems from "../../constants/menuItems";
+import { useDarkMode } from '../../contexts/DarkModeContext';
+
 
 
 const Navbar: React.FC = () => {
@@ -31,6 +34,7 @@ const Navbar: React.FC = () => {
   const [isDesktop, setIsDesktop] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [expandedOptions, setExpandedOptions] = useState<string[]>([]);
+  const { isDarkMode } = useDarkMode();
 
 
   const toggleOptionExpand = (optionName: string) => {
@@ -91,7 +95,7 @@ const Navbar: React.FC = () => {
 
   const toggleDropdown = () => {
     if (!isDesktop) setDropdownOpen((prev) => !prev);
-    navigate('/profile');
+    
   };
 
   const closeDropdown = () => {
@@ -178,7 +182,9 @@ const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Navbar */}
-      <nav className="fixed relative sticky z-50 bg-[#1d1d1d] top-0 w-full px-4 md:px-6 lg:px-10 h-[64px] py-3 flex items-center justify-between">
+      <nav className={`fixed relative sticky z-50 top-0 w-full px-4 md:px-6 lg:px-10 h-[64px] py-3 flex items-center justify-between transition-colors duration-300 ${
+        isDarkMode ? 'bg-[#1d1d1d] text-white' : 'bg-white text-black'
+      }`}>
         <div className="flex items-center space-x-6">
           {/* Hamburger menu */}
           <button className="text-2xl lg:hidden mr-2" onClick={toggleSidebar}>
@@ -187,7 +193,7 @@ const Navbar: React.FC = () => {
 
           {/* Logo */}
           <button onClick={() => navigateClick()}>
-          <img className="w-16 md:w-20 cursor-pointer" src={logo}   alt="Logo" />
+            <img className="w-16 md:w-20 cursor-pointer" src={isDarkMode ? logo : logoBlue}   alt="Logo" />
           </button>
 
           {/* Desktop Menu Items */}
@@ -201,7 +207,7 @@ const Navbar: React.FC = () => {
               >
                 {item.name === 'Results' ? (
                     <div className="relative ml-3">
-                      <span className="text-sm lg:text-sm text-[#d4d0d0]">
+                      <span className={`text-sm lg:text-sm ${isDarkMode ? 'text-[#d4d0d0]' : 'text-[1d1d1d]'} `}>
                         {item.name}
                       </span>
                       <div className="absolute -top-4 -right-8 h-[17px] w-[35.6px] bg-[#a86500] text-white text-[.6rem] font-bold px-2 py-1 rounded-full flex
@@ -210,7 +216,7 @@ const Navbar: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    <span className="text-sm lg:text-sm text-[#d4d0d0] ml-3">
+                    <span className={`text-sm lg:text-sm ${isDarkMode ? 'text-[#d4d0d0]' : 'text-[1d1d1d]'} ml-3`}>
                       {item.name}
                     </span>
                   )}
@@ -242,11 +248,11 @@ const Navbar: React.FC = () => {
 
                 {/* Dropdown menu */}
                 {hoveredItem === item.name && (
-                  <div className="absolute top-full left-0 mt-6 p-2 w-72 bg-[#1A1A1A] shadow-lg rounded-2xl z-50 transition-all duration-300">
+                  <div className={`absolute top-full left-0 mt-6 p-2 w-72 ${isDarkMode ? 'bg-[#1A1A1A]' : 'bg-white'} shadow-lg rounded-2xl z-50 transition-all duration-300`}>
                     {item.options.map((option) => (
                       <div key={option.name} className="relative">
                         <div
-                          className="flex items-center justify-between px-6 py-4 rounded-2xl text-[#d4d0d0] hover:bg-[#0f0f0f] cursor-pointer"
+                          className={`flex items-center justify-between px-6 py-4 rounded-2xl ${isDarkMode ? 'text-[#d4d0d0] hover:bg-[#0f0f0f]' : 'text-[#494A4A] hover:bg-[#edf2fa]'}  cursor-pointer`}
                           onMouseEnter={() => handleOptionMouseEnter(option.name)}
                           onMouseLeave={handleOptionMouseLeave}
                         >
@@ -259,7 +265,7 @@ const Navbar: React.FC = () => {
                         {/* Sub-options - Only show when this specific option is hovered */}
                         {option.subOptions && hoveredOption === option.name && (
                           <div
-                            className="absolute top-0 left-full ml-4 p-2 w-48 bg-[#1A1A1A] shadow-lg rounded-2xl z-50 transition-all duration-300"
+                            className={`absolute top-0 left-full ml-4 p-2 w-48 ${isDarkMode ? 'bg-[#1A1A1A]' : 'bg-white'} shadow-lg rounded-2xl z-50 transition-all duration-300`}
                             onMouseEnter={() => handleSubOptionMouseEnter(option.name)}
                             onMouseLeave={handleSubOptionMouseLeave}
                           >
@@ -267,7 +273,7 @@ const Navbar: React.FC = () => {
                               <Link
                                 key={sub.name}
                                 to={sub.link}
-                                className="block px-4 py-3 text-sm text-[#d4d0d0] hover:bg-[#0f0f0f] rounded-2xl last:rounded-b-2xl"
+                                className={`block px-4 py-3 text-sm ${isDarkMode ? 'text-[#d4d0d0] hover:bg-[#0f0f0f]' : 'text-[#494A4A] hover:bg-[#edf2fa]'} rounded-2xl last:rounded-b-2xl`}
                               >
                                 {sub.name}
                               </Link>

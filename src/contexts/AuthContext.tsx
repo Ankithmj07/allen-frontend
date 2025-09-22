@@ -42,7 +42,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(newToken);
     setStudent(newStudent);
 
-    Cookies.set("token", newToken, { expires: 7 }); // expires in 7 days
+    //const inOneMinute = new Date(new Date().getTime() + 60 * 1000);
+
+    Cookies.set("token", newToken, { expires: 7 }); 
     Cookies.set("student", JSON.stringify(newStudent), { expires: 7 });
   };
 

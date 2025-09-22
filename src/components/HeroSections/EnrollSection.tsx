@@ -7,6 +7,8 @@ import downaArrow from '../../assets/enrollArrow.png'
 import { useEnroll } from '../../contexts/EnrollContext';
 //import { useAuth } from "../../contexts/AuthContext";
 import Cookies from "js-cookie"
+import INDIAN_STATES from "../../constants/StateNames";
+import { useDarkMode } from "../../contexts/DarkModeContext";
 
 
 
@@ -25,6 +27,7 @@ const tabs: Tab[] = [
 const EnrollSection:React.FC = () => {
     const { selectedCourse } = useEnroll();
     const { courseLanguage,courseDate } = useEnroll();
+    const {isDarkMode} = useDarkMode();
     //const { student } = useAuth();
     //const [studentData, setStudentData] = useState();
     console.log(courseLanguage)
@@ -74,6 +77,7 @@ const EnrollSection:React.FC = () => {
 
       const savedToken = Cookies.get("student");
       console.log(savedToken)
+      const token = Cookies.get("token");
 
       useEffect(() => {
         if (savedToken) {
@@ -91,12 +95,57 @@ const EnrollSection:React.FC = () => {
           }
         }
       }, [savedToken]);
+
+      const baseUrl = "https://allen-backend.onrender.com/api";
+
+      const handleFormSubmit = async () => {
+        const payload = {
+          email: studentDetails.email,
+          gender: studentDetails.gender,
+          dob: studentDetails.dob,
+          pinCode: parseInt(addressDetails.pincode),
+          state: addressDetails.state,
+          city: addressDetails.city,
+          address1: addressDetails.addressLine1,
+          address2: addressDetails.addressLine2,
+          parentName: parentDetails.ParentName,
+          parentGender: parentDetails.parentGender,
+          parentPhNumber: parentDetails.parentMobile,
+        };
+      
+        console.log("Form Submitted:", payload);
+      
+        // Example POST request if needed
+        // fetch('/api/submit', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(payload),
+        // });
+        const response = await fetch(`${baseUrl}/student/`, {
+          method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json' ,
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = (await response.json());
+        console.log(data);
+
+        if (response.ok) {
+          console.log("Form submission success")
+        } else {
+          console.log("Form submission Failed")
+        }
+      };
+      
     if (!selectedCourse) {
         return <div className="text-white p-6">Loading course details...</div>;
       }      
 
   return (
-    <div className=" min-h-screen text-white p-6">
+    <div className={`min-h-screen ${isDarkMode ? 'text-white' :'text-black'} p-6`}>
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Section */}
         <div className="flex-1 flex flex-col gap-4 order-3 lg:order-1">
@@ -110,7 +159,7 @@ const EnrollSection:React.FC = () => {
                ? isAddressFormValid
                : false;
             return(
-            <div key={tab.id} className="bg-neutral-900 rounded-xl">
+            <div key={tab.id} className={` ${isDarkMode ? 'bg-neutral-900' :'bg-white'} rounded-xl`}>
               {/* Header */}
               <div
                 className="flex justify-between items-center p-4 cursor-pointer"
@@ -152,14 +201,14 @@ const EnrollSection:React.FC = () => {
 
               {/* Content */}
               {openTab === tab.id && (
-                <div className="p-4 border-t border-neutral-700">
+                <div className="p-4 border-t border-neutral-500">
                 {tab.id === 'student' && (
                   <div>  
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                         <div>
                           <label className="block mb-1">Student’s Full Name</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'}  border border-neutral-700 outline-none`}
                             placeholder="Full Name"
                             value={studentDetails.name}
                             onChange={(e) =>
@@ -170,7 +219,7 @@ const EnrollSection:React.FC = () => {
                         <div>
                           <label className="block mb-1">Student’s Mobile Number</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             placeholder="Mobile Number"
                             value={studentDetails.mobile}
                             onChange={(e) =>
@@ -210,7 +259,7 @@ const EnrollSection:React.FC = () => {
                         <div>
                           <label className="block mb-1">Date of Birth</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             type="date"
                             value={studentDetails.dob}
                             onChange={(e) =>
@@ -221,7 +270,7 @@ const EnrollSection:React.FC = () => {
                         <div className="md:col-span-2">
                           <label className="block mb-1">Email ID</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             type="email"
                             placeholder="Email"
                             value={studentDetails.email}
@@ -233,9 +282,12 @@ const EnrollSection:React.FC = () => {
                     </div>
                     <button
                         className={`w-full rounded-lg py-2 mt-4 ${
-                            isStudentFormValid
-                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                              : 'bg-neutral-700 text-neutral-400 cursor-not-allowed'
+                          isStudentFormValid
+                          ?
+                          "bg-blue-600 hover:bg-blue-700 text-white" 
+                          : isDarkMode
+                          ? "bg-neutral-700 text-neutral-400 cursor-not-allowed" // Disabled in dark
+                          : "bg-[#e6e6e6] text-gray-400 cursor-not-allowed" // Disabled in light
                           }`}
                           disabled={!isStudentFormValid}                        
                           onClick={handleContinue}
@@ -251,7 +303,7 @@ const EnrollSection:React.FC = () => {
                         <div>
                           <label className="block mb-1">Parent’s Full Name</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             placeholder="Full Name"
                             value={parentDetails.ParentName}
                             onChange={(e) =>
@@ -262,7 +314,7 @@ const EnrollSection:React.FC = () => {
                         <div>
                           <label className="block mb-1">Parent’s Mobile Number</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             placeholder="Mobile Number"
                             value={parentDetails.parentMobile}
                             onChange={(e) =>
@@ -302,9 +354,13 @@ const EnrollSection:React.FC = () => {
                     </div>
                     <button
                         className={`w-full rounded-lg py-2 mt-4 ${
-                            isParentFormValid
-                              ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                              : 'bg-neutral-700 text-neutral-400 cursor-not-allowed'
+                          isParentFormValid
+                          ? isDarkMode
+                            ? "bg-blue-600 hover:bg-blue-700 text-white" // Active button in dark
+                            : "bg-blue-600 hover:bg-blue-700 text-white" // Active button in light (same style works well)
+                          : isDarkMode
+                          ? "bg-neutral-700 text-neutral-400 cursor-not-allowed" // Disabled in dark
+                          : "bg-[#e6e6e6] text-gray-400 cursor-not-allowed" // Disabled in light
                           }`}
                           disabled={!isParentFormValid}                        
                           onClick={handleContinue}
@@ -319,7 +375,7 @@ const EnrollSection:React.FC = () => {
                         <div>
                           <label className="block mb-1">Pin Code</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             placeholder="Ex : 577523"
                             value={addressDetails.pincode}
                             onChange={(e) =>
@@ -330,7 +386,7 @@ const EnrollSection:React.FC = () => {
                         <div>
                           <label className="block mb-1">City</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             placeholder="Ex : Bengaluru"
                             value={addressDetails.city}
                             onChange={(e) =>
@@ -340,19 +396,24 @@ const EnrollSection:React.FC = () => {
                         </div>
                         <div>
                           <label className="block mb-1">State</label>
-                          <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
-                            placeholder="Ex : Karnataka"
+                          <select
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             value={addressDetails.state}
                             onChange={(e) =>
                             setAddressDetails({ ...addressDetails, state: e.target.value })
-                            }
-                          />
+                            }>
+                              <option value="">Select a state</option>
+                                  {INDIAN_STATES.map((state) => (
+                                    <option key={state} value={state}>
+                                      {state}
+                                    </option>
+                                  ))}
+                          </select>
                         </div>
                         <div>
-                          <label className="block mb-1">Address lin 01</label>
+                          <label className="block mb-1">Address line 1</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             type="text"
                             placeholder="Flat/house no, Block, building name"
                             value={addressDetails.addressLine1}
@@ -362,12 +423,12 @@ const EnrollSection:React.FC = () => {
                           />
                         </div>
                         <div>
-                          <label className="block mb-1">Address lin 02</label>
+                          <label className="block mb-1">Address line 2</label>
                           <input
-                            className="w-full px-3 py-2 rounded-md bg-neutral-800 text-white border border-neutral-700 outline-none"
+                            className={`w-full px-3 py-2 rounded-md ${isDarkMode ? 'bg-neutral-800 text-white' : 'bg-white text-neutral-500'} border border-neutral-700 outline-none`}
                             type="text"
                             placeholder="Street name, locality"
-                            value={addressDetails.addressLine1}
+                            value={addressDetails.addressLine2}
                             onChange={(e) =>
                                 setAddressDetails({ ...addressDetails, addressLine2: e.target.value })
                             }
@@ -381,7 +442,10 @@ const EnrollSection:React.FC = () => {
                               : 'bg-neutral-700 text-neutral-400 cursor-not-allowed'
                           }`}
                           disabled={!isStudentFormValid}                        
-                          onClick={handleContinue}
+                          onClick={() => {
+                            handleContinue();
+                            handleFormSubmit();
+                          }}
                     >
                         Continue
                     </button>
@@ -396,7 +460,7 @@ const EnrollSection:React.FC = () => {
 
         {/* Right Info Card */}
         <div className="w-full order-1 lg:order-2 lg:w-[350px]">
-          <div className="bg-neutral-900 rounded-xl p-4">
+          <div className={`${isDarkMode ? 'bg-neutral-900' :'bg-white'} rounded-xl p-4`}>
             <h2 className="font-semibold text-lg mb-2">
               {selectedCourse.name}
             </h2>
@@ -420,10 +484,10 @@ const EnrollSection:React.FC = () => {
 
           {/*  Benefit Card */}
           <div className="order-2 lg:order-3">
-          <p className="text-md text-white font-semibold mb-1 px-1 mt-6">
+          <p className="text-md  font-semibold mb-1 px-1 mt-6">
                 Price Breakdown
             </p>
-          <div className="bg-neutral-900 rounded-xl mt-4">
+          <div className={`${isDarkMode ? 'bg-neutral-900' :'bg-white'} rounded-xl mt-4`}>
             <div className="bg-[#00B17C] w-[50%] text-white text-center text-xs font-bold px-3 py-1 rounded-br-2xl rounded-tl-2xl whitespace-nowrap">
             SPECIAL FEE BENEFIT
             </div>
@@ -433,7 +497,7 @@ const EnrollSection:React.FC = () => {
             <div className="flex justify-between pl-6 pr-2 items-center mt-6">
               <p className="text-sm text-neutral-500">MRP ({selectedCourse.originalPrice} + Taxes)</p>
               <div className="flex items-center gap-2 px-3">
-                <p className="text-sm">₹ {selectedCourse.originalPrice + selectedCourse.taxes}</p>
+                <p className="text-sm">₹ {(selectedCourse.originalPrice + selectedCourse.taxes).toLocaleString("en-IN")}</p>
               </div>
             </div>
             <div className="flex justify-between pl-6 pr-2 items-center mt-4">
@@ -444,16 +508,16 @@ const EnrollSection:React.FC = () => {
                  </div>
               </div>
               <div className="flex items-center gap-2 px-3">
-                <p className="text-sm text-[#FA2946] font-semibold">- ₹ {selectedCourse.originalPrice - selectedCourse.price}</p>
+                <p className="text-sm text-[#FA2946] font-semibold">- ₹ {(selectedCourse.originalPrice - selectedCourse.price).toLocaleString("en-IN")}</p>
               </div>
             </div>
             <div className="px-4">
             <hr className="border-neutral-700 my-4" />
             </div>
             <div className="flex justify-between items-center pl-4 pr-2 pb-4">
-              <p className="text-md font-semibold text-white">Final course fee</p>
+              <p className="text-md font-semibold">Final course fee</p>
               <div className="flex items-center gap-2 px-3">
-                <p className="text-md font-semibold text-white">₹ {selectedCourse.price + selectedCourse.taxes}</p>
+                <p className="text-md font-semibold">₹ {(selectedCourse.price + selectedCourse.taxes).toLocaleString("en-IN")}</p>
               </div>
             </div>
           </div>
