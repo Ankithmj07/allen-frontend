@@ -71,7 +71,7 @@ const PhoneCallComponent: React.FC = () => {
 
   return (
     <div className={` ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'}`}>
-    <div className={` lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
+    <div className={` lg:container mx-auto xl:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
       <div className="flex flex-col lg:flex-row items-center justify-center px-4 py-12">
         {/* Left Illustration */}
         <div className="hidden lg:block lg:mb-0 lg:mr-10">

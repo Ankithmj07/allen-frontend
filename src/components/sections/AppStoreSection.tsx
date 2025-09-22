@@ -8,7 +8,7 @@ const AppStoreSection: React.FC = () => {
   const { isDarkMode } = useDarkMode();
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#fff]'} `}>
-    <div className={` lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
+    <div className={` lg:container mx-auto xl:px-[110px] 2xl:px-[224px] mt-0 pt-0`}>
         <section className=" px-4 md:px-8 lg:px-12 py-10">
           <div className="flex justify-center">
             <img

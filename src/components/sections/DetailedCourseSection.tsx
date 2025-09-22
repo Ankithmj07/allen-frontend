@@ -90,7 +90,7 @@ const DetailedCourseSection: React.FC = () => {
   console.log(upcomingDates)
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#edf2fa]'} `}>
-    <div className={` lg:container mx-auto lg:px-[110px] 2xl:px-[224px] mt-0 pt-20`}>
+    <div className={` lg:container mx-auto xl:px-[110px] 2xl:px-[224px] mt-0 pt-20`}>
       {/* Mobile Video */}
       <div className="block lg:hidden px-4 py-6 pt-8">
         <div className="rounded-2xl overflow-hidden shadow-lg">

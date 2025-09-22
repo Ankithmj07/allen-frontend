@@ -10,7 +10,7 @@ const TrustSection: React.FC = () => {
   const { isDarkMode } = useDarkMode();
   return (
     <div className={` ${isDarkMode ? 'bg-[#1d1d1d]' : 'bg-[#edf2fa]'} `}>
-    <div className={` lg:container mx-auto lg:px-[130px] 2xl:px-[224px] mt-0 pt-0`}>
+    <div className={` lg:container mx-auto xl:px-[130px] 2xl:px-[224px] mt-0 pt-0`}>
     <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} px-3 py-12`}>
       <h2 className="text-xl md:text-2xl font-bold mb-12">
         Discover why toppers trust{" "}

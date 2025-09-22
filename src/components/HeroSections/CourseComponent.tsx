@@ -142,7 +142,7 @@ const CourseComponent: React.FC = () => {
   
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#edf2fa]'} `}>
-    <div className={` lg:container mx-auto lg:px-[130px] 2xl:px-[224px] mt-0 pt-0 pb-10`}>
+    <div className={` lg:container mx-auto xl:px-[130px] 2xl:px-[224px] mt-0 pt-0 pb-10`}>
     <section className={`px-5 py-10 ${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'}`}>
       <div className="mb-6">
         <h2 className="text-2xl sm:text-[24px] font-bold">

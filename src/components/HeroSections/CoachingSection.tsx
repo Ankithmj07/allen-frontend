@@ -8,7 +8,7 @@ const CoachingSection: React.FC = () => {
   const { isDarkMode } = useDarkMode();
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#fff]'}`}>
-    <div className={` lg:container mx-auto lg:px-[130px] 2xl:px-[224px] mt-10 pt-0`}>
+    <div className={`lg:container mx-auto lg:px-[0px] xl:px-[130px] 2xl:px-[224px] mt-10 pt-0`}>
     <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} px-4 py-12`}>
     <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-10 lg:gap-20 max-w-7xl mx-auto">
 

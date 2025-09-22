@@ -56,7 +56,7 @@ const ProfileSection: React.FC = () => {
 
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f] text-white' : 'bg-[#edf2fa] text-black'} `}>
-    <div className="lg:container mx-auto lg:px-[40px] 2xl:px-[150px]  mt-10 pt-0">
+    <div className="lg:container mx-auto xl:px-[20px] 2xl:px-[150px]  mt-10 pt-0">
         <div className="px-6 pt-20 lg:px-10 lg:pt-10 border-b border-neutral-800 pb-5">
           <h1 className="text-lg lg:text-xl font-semibold">Your profile</h1>
         </div>

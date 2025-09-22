@@ -61,7 +61,7 @@ const ToppersSection: React.FC = () => {
   const { isDarkMode } = useDarkMode();
   return (
     <div className={` ${isDarkMode ? 'bg-[#0f0f0f]' : 'bg-[#fff]'} `}>
-    <div className={` lg:container mx-auto lg:px-[130px] 2xl:px-[224px] mt-0 pt-0`}>
+    <div className={` lg:container mx-auto lg:px-0 xl:px-[130px] 2xl:px-[224px] mt-0 pt-0`}>
     <section className={`${isDarkMode ? 'text-white' : 'text-[#0f0f0f]'} lg:px-4 px-4 py-10`}>
         <div className="flex flex-col lg:flex-row gap-4 justify-between">
           <div className='px-4 lg:px-0'>
