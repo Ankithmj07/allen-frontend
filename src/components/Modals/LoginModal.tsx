@@ -107,8 +107,8 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-black/50">
-      <div className="w-full max-w-5xl bg-[#1d1d1d] rounded-3xl shadow-xl  grid grid-cols-1 lg:grid-cols-2 relative p-2">
+    <div className="fixed inset-0 z-50  flex items-center justify-center backdrop-blur-md bg-black/50">
+      <div className="w-full max-w-5xl bg-[#1d1d1d] rounded-3xl shadow-xl  grid grid-cols-1 lg:grid-cols-2 relative p-2 max-h-[80vh] overflow-y-auto scrollbar-hide">
 
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-4 right-4 text-white text-xl font-bold z-10">
@@ -134,7 +134,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
             {isLogin ? 'Enter your credentials to access your account' : 'Fill in the details to create your account'}
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2">
 
             {!isLogin && (
               <>
